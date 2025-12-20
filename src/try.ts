@@ -1,38 +1,52 @@
 import { err, ok, type Result } from './result.js';
 
-export function xtry<T, E>(
+export function xtry<T, E = unknown>(
 	func: () => Exclude<T, Promise<unknown>>,
-	handler?: ((error: E) => void),
-): Result<T, E> {
+	handler?: (error: unknown) => E | undefined,
+): E extends void ? Result<T, unknown> : Result<T, E> {
 	try {
 		const value = func();
 
-		return ok(value);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return ok(value) as any;
 	}
 	catch (error) {
 		if(handler) {
-			handler(error as E);
+			const newError = handler(error);
+
+			if(newError !== undefined) {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return err(newError) as any;
+			}
 		}
 
-		return err(error as E);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return err(error as E) as any;
 	}
 }
 
-export async function xatry<T, E>(
+export async function xatry<T, E = unknown>(
 	func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>,
-	handler?: ((error: E) => void),
-): Promise<Result<T, E>> {
+	handler?: (error: unknown) => E | undefined,
+): Promise<E extends void ? Result<T, unknown> : Result<T, E>> {
 	try {
 		const value = await (func instanceof Promise ? func : Promise.resolve().then(func));
 
-		return ok(value);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return ok(value) as any;
 	}
 	catch (error) {
 		if(handler) {
-			handler(error as E);
+			const newError = handler(error);
+
+			if(newError !== undefined) {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return err(newError) as any;
+			}
 		}
 
-		return err(error as E);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return err(error as E) as any;
 	}
 }
 

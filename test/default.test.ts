@@ -9,18 +9,30 @@ function getSync(): number {
 	return 0;
 }
 
+function badSync(): number {
+	throw new Error('bad');
+}
+
 describe('default', async () => {
-	it('async', async () => { // {{{
+	it('success - async', async () => { // {{{
 		const { fails, value } = await xatry(getAsync());
 
 		expect(fails).to.equals(false);
 		expect(value).to.equals(0);
 	}); // }}}
 
-	it('sync', () => { // {{{
+	it('success - sync', () => { // {{{
 		const { fails, value } = xtry(getSync);
 
 		expect(fails).to.equals(false);
 		expect(value).to.equals(0);
+	}); // }}}
+
+	it('fails', () => { // {{{
+		const result = xtry(badSync);
+
+		expect(result.fails).to.equals(true);
+		expect(result.error).to.be.instanceOf(Error);
+		expect((result.error as Error).message).to.equals('bad');
 	}); // }}}
 });

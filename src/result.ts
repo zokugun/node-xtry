@@ -27,4 +27,3 @@ export function err<E>(error: E): Failure<E> {
 		error,
 	};
 }
-

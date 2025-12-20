@@ -130,8 +130,10 @@ export function err<E>(error: E): Failure<E>;
 ### Try helpers
 
 ```typescript
-export function xtry<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: E) => void): Result<T, E>;
-export function xatry<T, E>(func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>, handler?: (error: E) => void): Promise<Result<T, E>>;
+export function xtry<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
+export function xatry<T, E>(func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
+
+export function stringifyError(error: unknown): string;
 ```
 
 Both helpers:
