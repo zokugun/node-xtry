@@ -146,11 +146,11 @@ Both helpers:
 
 ```typescript
 type YSuccess<T> = Success<T> & { success: true };
-type YFailure<S> = { fails: false; success: false; type: S; value: null; error: null };
-type YResult<T, E, S> = Failure<E> | YSuccess<T> | YFailure<S>;
+type YFailure<M> = { fails: false; success: false; miscue: M; value: null; error: null };
+type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
 
 function yok<T>(value: T): YSuccess<T>;
-function yerr<S>(type: S): YFailure<S>;
+function yerr<M>(type: M): YFailure<M>;
 function yress<T, E>(result: Result<T, E>): Failure<E> | YSuccess<T>;
 function yresa<T, E>(promise: Promise<Result<T, E>>): Promise<Failure<E> | YSuccess<T>>;
 function yep<T>(result: Success<T>): YSuccess<T>;

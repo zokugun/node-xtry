@@ -1,15 +1,15 @@
 import { type Result, type Failure, type Success } from './result.js';
 
-export type YResult<T, E, S> = Failure<E> | YSuccess<T> | YFailure<S>;
+export type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
 
 export type YSuccess<T> = Success<T> & {
 	success: true;
 };
 
-export type YFailure<S> = {
+export type YFailure<M> = {
 	fails: false;
 	success: false;
-	type: S;
+	miscue: M;
 	value: null;
 	error: null;
 };
@@ -23,11 +23,11 @@ export function yok<T>(value: T): YSuccess<T> {
 	};
 }
 
-export function yerr<S>(type: S): YFailure<S> {
+export function yerr<M>(miscue: M): YFailure<M> {
 	return {
 		fails: false,
 		success: false,
-		type,
+		miscue,
 		value: null,
 		error: null,
 	};
