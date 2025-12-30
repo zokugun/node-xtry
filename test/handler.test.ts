@@ -5,7 +5,7 @@ function badSync(): number {
 	throw new Error('bad');
 }
 
-function assertIsStringOrNull(_: string | null) {
+function assertIsStringOrUndefined(_: string | undefined) {
 	void _;
 }
 
@@ -38,6 +38,6 @@ describe('handler', async () => {
 	it('assert', () => { // {{{
 		const result = xtry(badSync, stringifyError);
 
-		assertIsStringOrNull(result.error);
+		assertIsStringOrUndefined(result.error);
 	}); // }}}
 });

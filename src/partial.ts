@@ -10,8 +10,8 @@ export type YFailure<M> = {
 	fails: false;
 	success: false;
 	miscue: M;
-	value: null;
-	error: null;
+	value: undefined;
+	error: undefined;
 };
 
 export function yok<T>(value: T): YSuccess<T> {
@@ -19,7 +19,7 @@ export function yok<T>(value: T): YSuccess<T> {
 		fails: false,
 		success: true,
 		value,
-		error: null,
+		error: undefined,
 	};
 }
 
@@ -28,8 +28,8 @@ export function yerr<M>(miscue: M): YFailure<M> {
 		fails: false,
 		success: false,
 		miscue,
-		value: null,
-		error: null,
+		value: undefined,
+		error: undefined,
 	};
 }
 

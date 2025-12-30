@@ -119,8 +119,8 @@ API reference
 ### Result helpers
 
 ```typescript
-type Success<T> = { fails: false; value: T; error: null };
-type Failure<E> = { fails: true; value: null; error: E };
+type Success<T> = { fails: false; value: T; error: undefined };
+type Failure<E> = { fails: true; value: undefined; error: E };
 type Result<T, E> = Success<T> | Failure<E>;
 
 function ok<T>(value: T): Success<T>;
@@ -146,7 +146,7 @@ Both helpers:
 
 ```typescript
 type YSuccess<T> = Success<T> & { success: true };
-type YFailure<M> = { fails: false; success: false; miscue: M; value: null; error: null };
+type YFailure<M> = { fails: false; success: false; miscue: M; value: undefined; error: undefined };
 type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
 
 function yok<T>(value: T): YSuccess<T>;
