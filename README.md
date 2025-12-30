@@ -119,21 +119,21 @@ API reference
 ### Result helpers
 
 ```typescript
-export type Success<T> = { fails: false; value: T; error: null };
-export type Failure<E> = { fails: true; value: null; error: E };
-export type Result<T, E> = Success<T> | Failure<E>;
+type Success<T> = { fails: false; value: T; error: null };
+type Failure<E> = { fails: true; value: null; error: E };
+type Result<T, E> = Success<T> | Failure<E>;
 
-export function ok<T>(value: T): Success<T>;
-export function err<E>(error: E): Failure<E>;
+function ok<T>(value: T): Success<T>;
+function err<E>(error: E): Failure<E>;
 ```
 
 ### Try helpers
 
 ```typescript
-export function xtry<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
-export function xatry<T, E>(func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
+function xtry<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
+function xatry<T, E>(func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
 
-export function stringifyError(error: unknown): string;
+function stringifyError(error: unknown): string;
 ```
 
 Both helpers:
@@ -145,12 +145,15 @@ Both helpers:
 ### Partial helpers
 
 ```typescript
-export type YSuccess<T> = Success<T> & { success: true };
-export type YFailure<S> = { fails: false; success: false; type: S; value: null; error: null };
-export type YResult<T, E, S> = Failure<E> | YSuccess<T> | YFailure<S>;
+type YSuccess<T> = Success<T> & { success: true };
+type YFailure<S> = { fails: false; success: false; type: S; value: null; error: null };
+type YResult<T, E, S> = Failure<E> | YSuccess<T> | YFailure<S>;
 
-export function yok<T>(value: T): YSuccess<T>;
-export function yerr<S>(type: S): YFailure<S>;
+function yok<T>(value: T): YSuccess<T>;
+function yerr<S>(type: S): YFailure<S>;
+function yress<T, E>(result: Result<T, E>): Failure<E> | YSuccess<T>;
+function yresa<T, E>(promise: Promise<Result<T, E>>): Promise<Failure<E> | YSuccess<T>>;
+function yep<T>(result: Success<T>): YSuccess<T>;
 ```
 
 These helpers are useful when you need to separate soft rejections (`success: false`) from hard failures (`fails: true`).
