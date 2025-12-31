@@ -12,10 +12,12 @@ export type Failure<E> = {
 
 export type Result<T, E> = Success<T> | Failure<E>;
 
-export function ok<T>(value: T): Success<T> {
+export function ok(): Success<void>;
+export function ok<T>(value: T): Success<T>;
+export function ok<T>(value?: T): Success<T> {
 	return {
 		fails: false,
-		value,
+		value: value as T,
 		error: undefined,
 	};
 }
