@@ -53,3 +53,8 @@ export function yep<T>(result: Success<T>): YSuccess<T> {
 		success: true,
 	};
 }
+
+export const YOK = Object.freeze(yok());
+export const YOK_NULL = Object.freeze(yok(null));
+export const YOK_TRUE = Object.freeze(yok(true));
+export const YOK_FALSE = Object.freeze(yok(false));
