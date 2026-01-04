@@ -14,11 +14,13 @@ export type YFailure<M> = {
 	error: undefined;
 };
 
-export function yok<T>(value: T): YSuccess<T> {
+export function yok(): YSuccess<void>;
+export function yok<T>(value: T): YSuccess<T>;
+export function yok<T>(value?: T): YSuccess<T> {
 	return {
 		fails: false,
 		success: true,
-		value,
+		value: value as T,
 		error: undefined,
 	};
 }
@@ -51,4 +53,3 @@ export function yep<T>(result: Success<T>): YSuccess<T> {
 		success: true,
 	};
 }
-
