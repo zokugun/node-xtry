@@ -27,9 +27,9 @@ Quick Start
 -----------
 
 ```typescript
-import { xatry } from '@zokugun/xtry'
+import { xtry } from '@zokugun/xtry'
 
-const userResult = await xatry(fetchUserFromApi());
+const userResult = await xtry(fetchUserFromApi());
 
 if(userResult.fails) {
     console.error(userResult.error);
@@ -43,18 +43,18 @@ Advanced Example
 ----------------
 
 ```typescript
-import { err, type Result, xatry, xtry } from '@zokugun/xtry'
+import { err, type Result, xtry } from '@zokugun/xtry'
 
 export type FoobarError = { type: 'FOOBAR'; message: string };
 
 async function foobar(): Result<number, FoobarError> {
-    const result = await xatry(fetchUserFromApi());
+    const result = await xtry(fetchUserFromApi());
 
     if(fails) {
         return err({ type: 'FOOBAR', message: 'The promise has failed...' });
     }
 
-    return try(() => calculateAge(result.value));
+    return xtry(() => calculateAge(result.value));
 }
 
 async function main() {
@@ -113,6 +113,11 @@ function add(_x: string, _y: number): Result<number, MyError> {
 }
 ```
 
+Tips
+----
+
+- Narrow on `fails` first, then use other flags (`success`, custom `miscue` or `value`) for the happy-path branching.
+
 API reference
 -------------
 
@@ -131,23 +136,24 @@ function err<E>(error: E): Failure<E>;
 
 To minimize allocations when returning the same `Success` shape, you can reuse the exported frozen helpers:
 
-| Constant   | Wrapped value | Type            | Typical usage                                       |
-| ---------- | ------------- | --------------- | --------------------------------------------------- |
-| `OK`       | `ok()`        | `Success<void>` | Generic void success (e.g., cleanup, notifications) |
-| `OK_NULL`  | `ok(null)`    | `Success<null>` | APIs that explicitly signal "nothing" with `null`   |
-| `OK_TRUE`  | `ok(true)`    | `Success<true>` | Flag-style functions (`enable()` / `disable()`)     |
-| `OK_FALSE` | `ok(false)`   | `Success<false>`| Guard checks that succeed with `false`              |
+| Constant   | Wrapped value | Type             | Typical usage                                       |
+| ---------- | ------------- | ---------------- | --------------------------------------------------- |
+| `OK`       | `ok()`        | `Success<void>`  | Generic void success (e.g., cleanup, notifications) |
+| `OK_NULL`  | `ok(null)`    | `Success<null>`  | APIs that explicitly signal "nothing" with `null`   |
+| `OK_TRUE`  | `ok(true)`    | `Success<true>`  | Flag-style functions (`enable()` / `disable()`)     |
+| `OK_FALSE` | `ok(false)`   | `Success<false>` | Guard checks that succeed with `false`              |
 
 ### Try helpers
 
-```typescript
-function xtry<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
-function xatry<T, E>(func: (() => Exclude<T, Promise<unknown>>) | Promise<Exclude<T, Promise<unknown>>>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
+```
+function xtry<T, E>(func: (() => MaybePromise<T>) | Promise<T>, handler?: (error: unknown) => void | E): MaybePromise<Result<T, E>>;
+function xtrySync<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
+function xtryAsync<T, E>(func: (() => Promise<T>) | Promise<T>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
 
 function stringifyError(error: unknown): string;
 ```
 
-Both helpers:
+`xtry` inspects the supplied value: if it is or returns a promise you get a `Promise<Result<…>>`, otherwise you get a plain `Result`. Use `xtrySync`/`xtryAsync` when you need to force a specific flavor (tree shaking, stricter contracts, etc.). All helpers:
 
 - execute the supplied function and capture thrown values;
 - call the optional `handler` before turning that value into `err(error)`;
@@ -162,8 +168,9 @@ type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
 
 function yok<T>(value: T): YSuccess<T>;
 function yerr<M>(type: M): YFailure<M>;
-function yress<T, E>(result: Result<T, E>): Failure<E> | YSuccess<T>;
-function yresa<T, E>(promise: Promise<Result<T, E>>): Promise<Failure<E> | YSuccess<T>>;
+function yres<T, E>(result: MaybePromise<Result<T, E>>): MaybePromise<Failure<E> | YSuccess<T>>;
+function yresSync<T, E>(result: Result<T, E>): Failure<E> | YSuccess<T>;
+function yresAsync<T, E>(promise: Promise<Result<T, E>>): Promise<Failure<E> | YSuccess<T>>;
 function yep<T>(result: Success<T>): YSuccess<T>;
 ```
 
@@ -172,8 +179,8 @@ These helpers are useful when you need to separate soft rejections (`success: fa
 ### Defer helpers
 
 ```typescript
-type DeferSync<E> = <R extends Result<unknown, E>>(result?: R) => R | Success<void>;
-type DeferAsync<E> = <R extends Result<unknown, E>>(result?: R) => Promise<R | Success<void>>;
+type DeferSync<E> = (result?: Result<unknown, E>) => Result<unknown, E> | Success<void>;
+type DeferAsync<E> = (result?: Result<unknown, E>) => Promise<Result<unknown, E> | Success<void>>;
 
 function xdefer<E>(callback: () => Result<unknown, E> | Promise<Result<unknown, E>>): DeferSync<E> | DeferAsync<E>;
 function xdeferSync<E>(callback: () => Result<unknown, E>): DeferSync<E>;
@@ -209,18 +216,13 @@ Module entry points
 
 Choose the entry point that matches your environment and naming preferences:
 
-| Import path           | Description                                                                                           | `xtry` name      | `xdefer` name                  | Extra alias                      |
-| --------------------- | ----------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------ | -------------------------------- |
-| `@zokugun/xtry`       | Both sync and async exports side by side.                   | `xtry` / `xatry` | `xdefer` & `xdeferAsync` & `xdeferSync` | `yress`, `yresa` remain separate |
-| `@zokugun/xtry/async` | Optimized for async-only project. | `xtry` ⇒ `xatry` |  `xdeferAsync` as `xdefer`       | `yres` ⇒ `yresa`                 |
-| `@zokugun/xtry/sync`  | Synchronous-only surface area.                              | `xtry` (sync)    | `xdeferSync` as `xdefer`        | `yres` ⇒ `yress`                 |
+| Import path           | Description                 | `xtry` name                     | `xdefer` name                         | Extra alias                     |
+| --------------------- | --------------------------- | ------------------------------- | ------------------------------------- | ------------------------------- |
+| `@zokugun/xtry`       | Both sync, async and hybrid | `xtry`, `xtryAsync`, `xtrySync` | `xdefer`, `xdeferAsync`, `xdeferSync` | `yres`, `yresAsync`, `yresSync` |
+| `@zokugun/xtry/async` | Async-only                 | `xtryAsync` as `xtry`           | `xdeferAsync` as `xdefer`             | `yresAsync`  as `yres`          |
+| `@zokugun/xtry/sync`  | Synchronous-only            | `xtrySync` as `xtry`            | `xdeferSync` as `xdefer`              | `yresSync` as `yres`            |
 
 All modules share the same `Result`, `Partial`, and `stringifyError` exports, so you can swap entry points without refactoring types.
-
-Tips
-----
-
-- Narrow on `fails` first, then use other flags (`success`, custom `miscue` or `value`) for the happy-path branching.
 
 Donations
 ---------
