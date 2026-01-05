@@ -9,8 +9,8 @@
 
 Simple `try/catch` wrappers that always return a `Result` discriminated union, plus ready-made helpers (`ok`, `err`) for predictable control flow.
 
-Why xtry?
----------
+Why `@zokugun/xtry`?
+--------------------
 
 - Turn any sync or async function into an explicit `Result` object with zero dependencies.
 - Strong TypeScript types guide your control flow (`fails` and tagged errors).
@@ -123,9 +123,20 @@ type Success<T> = { fails: false; value: T; error: undefined };
 type Failure<E> = { fails: true; value: undefined; error: E };
 type Result<T, E> = Success<T> | Failure<E>;
 
-function ok<T>(value: T): Success<T>;
+function ok<T>(value?: T): Success<T>;
 function err<E>(error: E): Failure<E>;
 ```
+
+#### Pre-built `ok` constants
+
+To minimize allocations when returning the same `Success` shape, you can reuse the exported frozen helpers:
+
+| Constant   | Wrapped value | Type            | Typical usage                                       |
+| ---------- | ------------- | --------------- | --------------------------------------------------- |
+| `OK`       | `ok()`        | `Success<void>` | Generic void success (e.g., cleanup, notifications) |
+| `OK_NULL`  | `ok(null)`    | `Success<null>` | APIs that explicitly signal "nothing" with `null`   |
+| `OK_TRUE`  | `ok(true)`    | `Success<true>` | Flag-style functions (`enable()` / `disable()`)     |
+| `OK_FALSE` | `ok(false)`   | `Success<false>`| Guard checks that succeed with `false`              |
 
 ### Try helpers
 
@@ -158,10 +169,58 @@ function yep<T>(result: Success<T>): YSuccess<T>;
 
 These helpers are useful when you need to separate soft rejections (`success: false`) from hard failures (`fails: true`).
 
+### Defer helpers
+
+```typescript
+type DeferSync<E> = <R extends Result<unknown, E>>(result?: R) => R | Success<void>;
+type DeferAsync<E> = <R extends Result<unknown, E>>(result?: R) => Promise<R | Success<void>>;
+
+function xdefer<E>(callback: () => Result<unknown, E> | Promise<Result<unknown, E>>): DeferSync<E> | DeferAsync<E>;
+function xdeferSync<E>(callback: () => Result<unknown, E>): DeferSync<E>;
+function xdeferAsync<E>(callback: (() => Promise<Result<unknown, E>>) | Promise<Result<unknown, E>>): DeferAsync<E>;
+```
+
+Use these helpers to express "finally" logic that can also fail while preserving the original result when needed:
+
+```typescript
+import { stringifyError, xdefer, xtry } from '@zokugun/xtry/async'
+
+function test(): Result<void, string> {
+    const closeConnection = xdefer(xtry(connection.close()));
+
+    const queryResult = await xtry(connection.query('SELECT 1'));
+
+    if(queryResult.fails) {
+        return closeConnection(err(stringifyError(queryResult.error)))
+    }
+
+    ...
+
+    return closeConnection();
+}
+```
+
+- `xdefer` inspects the callback result: if it fails, it becomes the returned error unless the main result already failed.
+- Passing a promise (or async factory) makes the defer helper async-aware; `xdeferSync`/`xdeferAsync` let you pin the behavior explicitly for bundlers.
+- Calling the returned function with no arguments just runs the deferred work and yields `ok()`.
+
+Module entry points
+-------------------
+
+Choose the entry point that matches your environment and naming preferences:
+
+| Import path           | Description                                                                                           | `xtry` name      | `xdefer` name                  | Extra alias                      |
+| --------------------- | ----------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------ | -------------------------------- |
+| `@zokugun/xtry`       | Both sync and async exports side by side.                   | `xtry` / `xatry` | `xdefer` & `xdeferAsync` & `xdeferSync` | `yress`, `yresa` remain separate |
+| `@zokugun/xtry/async` | Optimized for async-only project. | `xtry` ⇒ `xatry` |  `xdeferAsync` as `xdefer`       | `yres` ⇒ `yresa`                 |
+| `@zokugun/xtry/sync`  | Synchronous-only surface area.                              | `xtry` (sync)    | `xdeferSync` as `xdefer`        | `yres` ⇒ `yress`                 |
+
+All modules share the same `Result`, `Partial`, and `stringifyError` exports, so you can swap entry points without refactoring types.
+
 Tips
 ----
 
-- Narrow on `fails` first, then use other flags (`success`, custom `type` or `value`) for the happy-path branching.
+- Narrow on `fails` first, then use other flags (`success`, custom `miscue` or `value`) for the happy-path branching.
 
 Donations
 ---------

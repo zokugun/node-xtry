@@ -16,6 +16,11 @@
 		"url": "https://github.com/zokugun/node-xtry/issues"
 	},
 	"type": "module",
+	"exports": {
+		".": "./lib/index.js",
+		"./async": "./lib/async.js",
+		"./sync": "./lib/sync.js"
+	},
 	"main": "lib/index.js",
 	"scripts": {
 		"commit": "cz",
