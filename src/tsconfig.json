@@ -5,7 +5,6 @@
 		"outDir": "../lib/esm",							/* Specify an output folder for all emitted files. */
 		"rootDir": ".",									/* Specify the root directory of input files. */
 		"declaration": true,							/* Generates corresponding '.d.ts' file. */
-		"declarationDir": "../lib/types",
 
 		/* Module Resolution Options */
 		"resolveJsonModule": true,						/* Enable importing .json files */
