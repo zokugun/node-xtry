@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.6.3 | 2026-01-06
+- incorporate all required files into the published package
+
 ## v0.6.2 | 2026-01-06
 - use `tsdown` to generate CJS and ESM files
 
