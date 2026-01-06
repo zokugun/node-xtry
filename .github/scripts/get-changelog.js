@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Get version from command line argument (with 'v' prefix)
 const version = process.argv[2];
