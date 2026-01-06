@@ -17,12 +17,43 @@
 	},
 	"type": "module",
 	"exports": {
-		".": "./lib/index.js",
-		"./async": "./lib/async.js",
-		"./sync": "./lib/sync.js"
+		".": {
+			"types": "./lib/types/index.d.ts",
+			"import": "./lib/esm/index.js",
+			"require": "./lib/cjs/index.js",
+			"default": "./lib/esm/index.js"
+		},
+		"./async": {
+			"types": "./lib/types/async.d.ts",
+			"import": "./lib/esm/async.js",
+			"require": "./lib/cjs/async.js",
+			"default": "./lib/esm/async.js"
+		},
+		"./sync": {
+			"types": "./lib/types/sync.d.ts",
+			"import": "./lib/esm/sync.js",
+			"require": "./lib/cjs/sync.js",
+			"default": "./lib/esm/sync.js"
+		}
 	},
-	"main": "lib/index.js",
+	"main": "lib/cjs/index.js",
+	"module": "lib/esm/index.js",
+	"types": "lib/types/index.d.ts",
+	"typesVersions": {
+		"*": {
+			"async": [
+				"./lib/types/async.d.ts"
+			],
+			"sync": [
+				"./lib/types/sync.d.ts"
+			]
+		}
+	},
 	"scripts": {
+		"build": "npm run clean && npm run build:cjs && npm run build:esm",
+		"build:cjs": "tsc -p src/tsconfig.cjs.json",
+		"build:esm": "tsc -p src/tsconfig.json",
+		"clean": "rimraf lib .test",
 		"commit": "cz",
 		"compile": "tsc -p src",
 		"lint": "xo",

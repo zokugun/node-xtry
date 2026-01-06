@@ -2,12 +2,12 @@
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
 		/* Basic Options */
-		"outDir": "../lib/esm",							/* Specify an output folder for all emitted files. */
+		"outDir": "../lib/cjs",							/* Specify an output folder for all emitted files. */
 		"rootDir": ".",									/* Specify the root directory of input files. */
-		"declaration": true,							/* Generates corresponding '.d.ts' file. */
-		"declarationDir": "../lib/types",
+		"declaration": false,							/* Generates corresponding '.d.ts' file. */
 
 		/* Module Resolution Options */
+		"module": "CommonJS",
 		"resolveJsonModule": true,						/* Enable importing .json files */
 	},
 	"references": [
