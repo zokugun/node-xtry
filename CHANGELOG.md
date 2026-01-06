@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.6.2 | 2026-01-06
+- use `tsdown` to generate CJS and ESM files
+
 ## v0.6.1 | 2026-01-06
 - publish `.cjs` files
 
@@ -21,7 +24,7 @@
 - use `undefined` instead of `null`
 
 ## v0.3.0 | 2025-12-20
-- xtry's error handler can transform error
+- `xtry`'s error handler can transform error
 - add `stringifyError` helper
 
 ## v0.2.0 | 2025-12-19
