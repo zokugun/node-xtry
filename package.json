@@ -46,20 +46,24 @@
 		}
 	},
 	"scripts": {
+		"build": "npm run clean && npm run build:lib",
 		"build:lib": "tsc-leda generate",
 		"build:package": "tsc-leda update-package",
 		"clean": "rimraf lib .test",
 		"commit": "cz",
-		"compile": "tsc -p src/tsconfig.json",
+		"compile:src": "tsc -p src",
+		"compile:test": "tsc -p test",
 		"lint": "xo",
 		"lint:fix": "xo --fix",
 		"prepack": "npm run build",
 		"prepare": "husky; fixpack || true",
 		"release": "release-it",
 		"test": "vitest run",
-		"watch:source": "tsc-watch -p src",
-		"watch:test": "vitest"
+		"test:watch": "vitest",
+		"watch:src": "tsc-watch -p src",
+		"watch:test": "tsc-watch -p test"
 	},
+	"dependencies": {},
 	"devDependencies": {
 		"@commitlint/cli": "^19.7.1",
 		"@commitlint/config-conventional": "^19.7.1",
