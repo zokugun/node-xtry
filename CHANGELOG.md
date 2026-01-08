@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.4 | 2026-01-08
+- use `tsc-leda` to generate CJS and ESM files
+- fix `xdefer` typing
+
 ## v0.6.3 | 2026-01-06
 - incorporate all required files into the published package
 
