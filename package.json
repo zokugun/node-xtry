@@ -18,25 +18,36 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"import": "./lib/esm/index.js",
-			"require": "./lib/cjs/index.cjs",
-			"default": "./lib/esm/index.js"
+			"import": "./lib/esm/index.mjs",
+			"require": "./lib/cjs/index.cjs"
 		},
 		"./async": {
-			"import": "./lib/esm/async.js",
-			"require": "./lib/cjs/async.cjs",
-			"default": "./lib/esm/async.js"
+			"import": "./lib/esm/async.mjs",
+			"require": "./lib/cjs/async.cjs"
 		},
 		"./sync": {
-			"import": "./lib/esm/sync.js",
-			"require": "./lib/cjs/sync.cjs",
-			"default": "./lib/esm/sync.js"
+			"import": "./lib/esm/sync.mjs",
+			"require": "./lib/cjs/sync.cjs"
 		}
 	},
 	"main": "lib/cjs/index.cjs",
-	"module": "lib/esm/index.js",
+	"module": "lib/esm/index.mjs",
+	"typesVersions": {
+		"*": {
+			".": [
+				"./lib/cjs/index.d.cts"
+			],
+			"async": [
+				"./lib/cjs/async.d.cts"
+			],
+			"sync": [
+				"./lib/cjs/sync.d.cts"
+			]
+		}
+	},
 	"scripts": {
-		"build": "tsdown",
+		"build:lib": "tsc-leda generate",
+		"build:package": "tsc-leda update-package",
 		"clean": "rimraf lib .test",
 		"commit": "cz",
 		"compile": "tsc -p src/tsconfig.json",
@@ -54,6 +65,7 @@
 		"@commitlint/config-conventional": "^19.7.1",
 		"@types/fs-extra": "^11.0.4",
 		"@types/node": "^20.14.8",
+		"@zokugun/tsc-leda": "^0.1.0",
 		"commitizen": "^4.3.1",
 		"fixpack": "^4.0.0",
 		"fs-extra": "^11.3.3",
@@ -62,7 +74,6 @@
 		"lint-staged": "^16.1.4",
 		"release-it": "^18.1.2",
 		"tsc-watch": "^6.3.0",
-		"tsdown": "^0.12.9",
 		"typescript": "^5.7.3",
 		"vitest": "^4.0.16",
 		"xo": "0.60.0"
