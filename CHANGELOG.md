@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.0 | 2026-01-09
+- add `trySyncIterable` and `tryAsyncIterable` to support itearables
+- add `toStringFailure` helper
+- `async` and `sync` are exporting all functions
+
 ## v0.6.4 | 2026-01-08
 - use `tsc-leda` to generate CJS and ESM files
 - fix `xdefer` typing
