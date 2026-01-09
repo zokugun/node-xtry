@@ -1,10 +1,15 @@
 import { it, expect, expectTypeOf } from 'vitest';
-import { err, type Failure, ok, type Result, xdeferAsync } from '../src/index.js';
+import { err, type Failure, ok, type Result, type XDeferAsync, xdeferAsync } from '../src/index.js';
 import { cleanup } from './utils/cleanup.js';
 import { type TestResult } from './utils/types.js';
 
 it('defer-ok - value-ok-success', async () => { // {{{
+	expectTypeOf(cleanup).toEqualTypeOf<(error?: string) => Promise<Result<void, string>>>();
+
 	const defer = xdeferAsync(cleanup);
+
+	expectTypeOf(defer).toEqualTypeOf<XDeferAsync<string>>();
+
 	const initial = ok('value-ok');
 	const output = await defer(initial);
 

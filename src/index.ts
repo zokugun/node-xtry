@@ -1,3 +1,4 @@
+export type { XDeferAsync, XDeferSync } from './defer.js';
 export { xdefer, xdeferAsync, xdeferSync } from './defer.js';
 
 export type { YResult, YSuccess, YFailure } from './partial.js';
