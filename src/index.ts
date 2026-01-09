@@ -8,4 +8,6 @@ export { ok, err, OK, OK_NULL, OK_TRUE, OK_FALSE } from './result.js';
 
 export { stringifyError } from './stringify-error.js';
 
+export { toStringFailure } from './to-string-failure.js';
+
 export { xtry, xtryAsync, xtryAsyncIterable, xtrySync, xtrySyncIterable } from './try.js';
