@@ -8,4 +8,4 @@ export { ok, err, OK, OK_NULL, OK_TRUE, OK_FALSE } from './result.js';
 
 export { stringifyError } from './stringify-error.js';
 
-export { xtryAsync as xtry } from './try.js';
+export { xtryAsync as xtry, xtryAsyncIterable as xtryIterable } from './try.js';

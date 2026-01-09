@@ -147,17 +147,32 @@ To minimize allocations when returning the same `Success` shape, you can reuse t
 
 ```
 function xtry<T, E>(func: (() => MaybePromise<T>) | Promise<T>, handler?: (error: unknown) => void | E): MaybePromise<Result<T, E>>;
-function xtrySync<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
+function xtry<T, E>(iterable: (() => Iterable<T>) | Iterable<T>, handler?: (error: unknown) => void | E): Iterable<Result<T, E>>;
+function xtry<T, E>(iterable: (() => AsyncIterable<T>) | AsyncIterable<T>, handler?: (error: unknown) => void | E): AsyncIterable<Result<T, E>>;
 function xtryAsync<T, E>(func: (() => Promise<T>) | Promise<T>, handler?: (error: unknown) => void | E): Promise<Result<T, E>>;
+function xtryAsyncIterable<T, E>(iterable: (() => MaybePromise<AsyncIterable<T>>) | MaybePromise<AsyncIterable<T>>, handler?: (error: unknown) => void | E): AsyncIterable<Result<T, E>>;
+function xtrySync<T, E>(func: () => Exclude<T, Promise<unknown>>, handler?: (error: unknown) => void | E): Result<T, E>;
+function xtrySyncIterable<T, E>(iterable: (() => Iterable<T>) | Iterable<T>, handler?: (error: unknown) => void | E): Iterable<Result<T, E>>;
+(error: unknown) => void | E): AsyncIterable<Result<T, E>>;
 
 function stringifyError(error: unknown): string;
 ```
 
-`xtry` inspects the supplied value: if it is or returns a promise you get a `Promise<Result<…>>`, otherwise you get a plain `Result`. Use `xtrySync`/`xtryAsync` when you need to force a specific flavor (tree shaking, stricter contracts, etc.). All helpers:
+`xtry` inspects the supplied value and chooses the matching shape:
+
+- promises or async factories → `Promise<Result<…>>`
+- async iterables → `AsyncIterable<Result<…>>`
+- iterators/generators → `Iterable<Result<…>>`
+- everything else → plain `Result<…>`
+
+Wrap default collections (arrays, sets, maps, strings, typed arrays, …) inside a function if you need them treated as raw values instead of iterables.<br />
+Reach for `xtrySync`/`xtryAsync` when you want to force a specific mode, and prefer the explicit `xtrySyncIterable`/`xtryAsyncIterable` exports whenever you always expect iterable outputs.<br />
+`xtryIterable` and `xtryAsyncIterable` wrap synchronous or asynchronous iterables, yielding a stream of `Result` values and emitting a single `err(...)` before stopping when the underlying iterator throws or rejects.
+
+All helpers:
 
 - execute the supplied function and capture thrown values;
 - call the optional `handler` before turning that value into `err(error)`;
-- never throw, making the return signature a reliable discriminated union.
 
 ### Partial helpers
 
