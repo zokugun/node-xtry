@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.7.2 | 2026-01-09
+- add `bind` and `...args` to `xdefer`
+
 ## v0.7.1 | 2026-01-09
 - fix `toStringFailure` to take a `Failure<unknown>`
 
