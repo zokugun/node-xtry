@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.7.1 | 2026-01-09
+- fix `toStringFailure` to take a `Failure<unknown>`
+
 ## v0.7.0 | 2026-01-09
 - add `trySyncIterable` and `tryAsyncIterable` to support itearables
 - add `toStringFailure` helper
