@@ -24,7 +24,7 @@ export function successSyncIterable(): Iterable<number> {
 export function failsSyncIterable(): Iterable<number> {
 	return (function * () {
 		yield 0;
-		throw new Error('fails-iterable');
+		throw new Error('fails-sync-iterable');
 	})();
 }
 

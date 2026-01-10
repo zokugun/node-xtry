@@ -25,7 +25,7 @@ it('fails - no-handler', () => {
 	expect(success?.fails).to.equals(false);
 	expect(success?.value).to.equals(0);
 	expect(failure?.fails).to.equals(true);
-	expect((failure?.error as Error).message).to.equals('fails-iterable');
+	expect((failure?.error as Error).message).to.equals('fails-sync-iterable');
 });
 
 it('fails - with-handler', () => {

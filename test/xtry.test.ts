@@ -77,7 +77,7 @@ describe('sync-iterable', () => {
 		const failure = results.at(-1);
 
 		expect(failure?.fails).to.equals(true);
-		expect((failure?.error as Error).message).to.equals('fails-iterable');
+		expect((failure?.error as Error).message).to.equals('fails-sync-iterable');
 	});
 
 	it('fails - with-handler', () => {

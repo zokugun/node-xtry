@@ -174,6 +174,27 @@ All helpers:
 - execute the supplied function and capture thrown values;
 - call the optional `handler` before turning that value into `err(error)`;
 
+### xtryify helpers
+
+`xtryify*` helpers turn any function into a reusable wrapper that always yields a `Result`, saving you from retyping `xtry(…)` every time you call it.
+
+```typescript
+import { xtryifyAsync, xtryifySync } from '@zokugun/xtry'
+
+const fetchUserSafely = xtryifyAsync((id: string) => fetch(`/users/${id}`).then(r => r.json()));
+const parseConfig = xtryifySync(() => JSON.parse(readFileSync('config.json', 'utf8')));
+
+const userResult = await fetchUserSafely('42');
+const configResult = parseConfig();
+```
+
+Available variants mirror the regular helpers:
+
+- `xtryifySync(fn)` and `xtryifyAsync(fn)` return new functions that forward arguments to `fn` and capture thrown/errors as `Result` objects.
+- `xtryifySyncIterable(fn)` and `xtryifyAsyncIterable(fn)` wrap functions that return iterables/async iterables, yielding streams of `Result` values.
+
+Because the returned function already encapsulates the try/catch logic, you can share it across modules (e.g., inject into DI containers or export once for common utilities) while keeping strong `Result` typing for every call site.
+
 ### Partial helpers
 
 ```typescript

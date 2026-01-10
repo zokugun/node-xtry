@@ -12,3 +12,6 @@ export { stringifyError } from './stringify-error.js';
 export { toStringFailure } from './to-string-failure.js';
 
 export { xtry as xtryUnknown, xtryAsync as xtry, xtryAsyncIterable as xtryIterable, xtrySync, xtrySyncIterable } from './try.js';
+
+export type { AsyncIteratableResult, AsyncIteratorElement, AsyncResult, SyncIteratableResult, SyncIteratorElement, SyncResult } from './tryify.js';
+export { xtryifyAsync as xtryify, xtryifyAsyncIterable as xtryifyIterable, xtryifySync, xtryifySyncIterable } from './tryify.js';
