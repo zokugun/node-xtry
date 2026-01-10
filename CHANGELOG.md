@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.8.0 | 2026-01-10
+- add `xtryifySync`, `xtryifyAsync`, `xtryifySyncIterable` and `xtryifyAsyncIterable` helpers
+
 ## v0.7.2 | 2026-01-09
 - add `bind` and `...args` to `xdefer`
 
