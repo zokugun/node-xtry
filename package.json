@@ -25,6 +25,10 @@
 			"import": "./lib/esm/async.mjs",
 			"require": "./lib/cjs/async.cjs"
 		},
+		"./result": {
+			"import": "./lib/esm/result.mjs",
+			"require": "./lib/cjs/result.cjs"
+		},
 		"./sync": {
 			"import": "./lib/esm/sync.mjs",
 			"require": "./lib/cjs/sync.cjs"
@@ -39,6 +43,9 @@
 			],
 			"async": [
 				"./lib/cjs/async.d.cts"
+			],
+			"result": [
+				"./lib/cjs/result.d.cts"
 			],
 			"sync": [
 				"./lib/cjs/sync.d.cts"
