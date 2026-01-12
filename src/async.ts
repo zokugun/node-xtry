@@ -1,6 +1,8 @@
 export type { XDeferAsync, XDeferSync } from './defer.js';
 export { xdefer as xdeferUnknown, xdeferAsync as xdefer, xdeferSync } from './defer.js';
 
+export { parseJSON, parseJson } from './json.js';
+
 export type { YResult, YSuccess, YFailure } from './partial.js';
 export { yok, yerr, yres as yresUnknown, yresAsync as yres, yresSync, yep, YOK, YOK_FALSE, YOK_NULL, YOK_TRUE, YOK_UNDEFINED } from './partial.js';
 

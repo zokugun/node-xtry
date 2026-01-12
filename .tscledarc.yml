@@ -1,6 +1,7 @@
 entry:
   .: index.ts
   async: async.ts
+  json: json.ts
   result: result.ts
   sync: sync.ts
 format:
