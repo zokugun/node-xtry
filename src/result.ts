@@ -31,6 +31,7 @@ export function err<E>(error: E): Failure<E> {
 }
 
 export const OK = Object.freeze(ok());
+export const OK_FALSE = Object.freeze(ok(false));
 export const OK_NULL = Object.freeze(ok(null));
 export const OK_TRUE = Object.freeze(ok(true));
-export const OK_FALSE = Object.freeze(ok(false));
+export const OK_UNDEFINED = Object.freeze(ok(undefined));

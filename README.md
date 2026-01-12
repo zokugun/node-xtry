@@ -136,12 +136,13 @@ function err<E>(error: E): Failure<E>;
 
 To minimize allocations when returning the same `Success` shape, you can reuse the exported frozen helpers:
 
-| Constant   | Wrapped value | Type             | Typical usage                                       |
-| ---------- | ------------- | ---------------- | --------------------------------------------------- |
-| `OK`       | `ok()`        | `Success<void>`  | Generic void success (e.g., cleanup, notifications) |
-| `OK_NULL`  | `ok(null)`    | `Success<null>`  | APIs that explicitly signal "nothing" with `null`   |
-| `OK_TRUE`  | `ok(true)`    | `Success<true>`  | Flag-style functions (`enable()` / `disable()`)     |
-| `OK_FALSE` | `ok(false)`   | `Success<false>` | Guard checks that succeed with `false`              |
+| Constant       | Wrapped value   | Type                 | Typical usage                                          |
+| -------------- | --------------- | -------------------- | ------------------------------------------------------ |
+| `OK`           | `ok()`          | `Success<void>`      | Generic void success (e.g., cleanup, notifications)    |
+| `OK_NULL`      | `ok(null)`      | `Success<null>`      | APIs that explicitly signal "nothing" with `null`      |
+| `OK_UNDEFINED` | `ok(undefined)` | `Success<undefined>` | APIs that explicitly signal "nothing" with `undefined` |
+| `OK_TRUE`      | `ok(true)`      | `Success<true>`      | Flag-style functions (`enable()` / `disable()`)        |
+| `OK_FALSE`     | `ok(false)`     | `Success<false>`     | Guard checks that succeed with `false`                 |
 
 ### Try helpers
 
