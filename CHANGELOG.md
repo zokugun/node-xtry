@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.9.0 | 2026-01-12
+- add `OK_UNDEFINED` prebuilt
+- improve `xtryify` so it preserves the typing of the given function even if it's an overloaded function
+- xtryify `JSON.parse` as `parseJson`
+- expose modules `result` and `json`
+
 ## v0.8.0 | 2026-01-10
 - add `xtryifySync`, `xtryifyAsync`, `xtryifySyncIterable` and `xtryifyAsyncIterable` helpers
 
