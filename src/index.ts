@@ -15,5 +15,5 @@ export { toStringFailure } from './to-string-failure.js';
 
 export { xtry, xtryAsync, xtryAsyncIterable, xtrySync, xtrySyncIterable } from './try.js';
 
-export type { AsyncIteratableResult, AsyncIteratorElement, AsyncResult, SyncIteratableResult, SyncIteratorElement, SyncResult } from './tryify.js';
+export type { AsyncFunction, AsyncIterableFunction, AsyncIteratableResult, AsyncIteratorElement, AsyncResult, PreserveAsyncIterableOverloads, PreserveAsyncOverloads, PreserveSyncIterableOverloads, PreserveSyncOverloads, SyncFunction, SyncIterableFunction, SyncIteratableResult, SyncIteratorElement, SyncResult } from './tryify.js';
 export { xtryifyAsync, xtryifyAsyncIterable, xtryifySync, xtryifySyncIterable } from './tryify.js';
