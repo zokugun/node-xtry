@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.9.1 | 2026-01-12
+- export all types to help to build a cohesive `xtryify`
+
 ## v0.9.0 | 2026-01-12
 - add `OK_UNDEFINED` prebuilt
 - improve `xtryify` so it preserves the typing of the given function even if it's an overloaded function
