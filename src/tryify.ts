@@ -95,25 +95,25 @@ export type SyncIteratorElement<T> =
 export type SyncResult<T extends (...args: unknown[]) => NotPromise<unknown>, Err extends Error> = Result<ReturnType<T>, Err>;
 export type SyncIteratableResult<T extends (...args: unknown[]) => unknown, Err extends Error> = Iterable<Result<SyncIteratorElement<ReturnType<T>>, Err>, unknown, unknown>;
 
-export function xtryifyAsync<Fn extends AnyAsyncFunction, Err extends Error>(fn: AsyncFunction<Fn>): PreserveAsyncOverloads<Fn, Err> {
+export function xtryifyAsync<Err extends Error, Fn extends AnyAsyncFunction = any>(fn: AsyncFunction<Fn>): PreserveAsyncOverloads<Fn, Err> {
 	return async function (...args: Parameters<Fn>): AsyncResult<Fn, Err> {
 		return xtryAsync(async () => fn(...args)) as AsyncResult<Fn, Err>;
 	} as PreserveAsyncOverloads<Fn, Err>;
 }
 
-export function xtryifyAsyncIterable<Fn extends AsyncIterableFunction, Err extends Error>(fn: Fn): PreserveAsyncIterableOverloads<Fn, Err> {
+export function xtryifyAsyncIterable<Err extends Error, Fn extends AsyncIterableFunction = any>(fn: Fn): PreserveAsyncIterableOverloads<Fn, Err> {
 	return function (...args: Parameters<Fn>): AsyncIteratableResult<Fn, Err> {
 		return xtryAsyncIterable(fn(...args)) as AsyncIteratableResult<Fn, Err>;
 	} as PreserveAsyncIterableOverloads<Fn, Err>;
 }
 
-export function xtryifySync<Fn extends AnySyncFunction, Err extends Error>(fn: SyncFunction<Fn>): PreserveSyncOverloads<Fn, Err> {
+export function xtryifySync<Err extends Error, Fn extends AnySyncFunction = any>(fn: SyncFunction<Fn>): PreserveSyncOverloads<Fn, Err> {
 	return function (...args: Parameters<Fn>): SyncResult<Fn, Err> {
 		return xtrySync(() => fn(...args)) as SyncResult<Fn, Err>;
 	} as PreserveSyncOverloads<Fn, Err>;
 }
 
-export function xtryifySyncIterable<Fn extends SyncIterableFunction, Err extends Error>(fn: Fn): PreserveSyncIterableOverloads<Fn, Err> {
+export function xtryifySyncIterable<Err extends Error, Fn extends SyncIterableFunction = any>(fn: Fn): PreserveSyncIterableOverloads<Fn, Err> {
 	return function (...args: Parameters<Fn>): SyncIteratableResult<Fn, Err> {
 		return xtrySyncIterable(fn(...args)) as SyncIteratableResult<Fn, Err>;
 	} as PreserveSyncIterableOverloads<Fn, Err>;
