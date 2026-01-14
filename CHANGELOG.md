@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.10.0 | 2026-01-14
+- in `xtryify`, move error type first so it can be specified
+
 ## v0.9.1 | 2026-01-12
 - export all types to help to build a cohesive `xtryify`
 
