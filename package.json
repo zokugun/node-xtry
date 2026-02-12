@@ -64,7 +64,6 @@
 		"build:lib": "tsc-leda generate",
 		"build:package": "tsc-leda update-package",
 		"clean": "rimraf lib .test",
-		"commit": "cz",
 		"compile:src": "tsc -p src",
 		"compile:test": "tsc -p test",
 		"lint": "xo",
