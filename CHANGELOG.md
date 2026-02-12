@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.10.1 | 2026-02-12
+- update dev dependencies
+
 ## v0.10.0 | 2026-01-14
 - in `xtryify`, move error type first so it can be specified
 
