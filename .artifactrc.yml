@@ -1,6 +1,6 @@
 artifacts:
   "@daiyam/artifact-lang-js":
-    version: 0.8.5
+    version: 0.9.1
     provides:
       - "20"
   "@daiyam/artifact-lang-ts":
@@ -10,6 +10,6 @@ artifacts:
   "@daiyam/artifact-npm-zokugun":
     version: 0.2.2
   "@daiyam/artifact-npm":
-    version: 0.6.1
+    version: 0.6.2
   "@daiyam/artifact-test-vitest-ts":
-    version: 0.2.2
+    version: 0.2.3
