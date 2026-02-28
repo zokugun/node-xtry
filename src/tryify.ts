@@ -39,25 +39,24 @@ type OverloadsUnion<Fn extends Function> = Fn extends {
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
 type WrapAsyncOverload<Fn extends AnyAsyncFunction, Err extends Error> = Fn extends (...args: infer Args) => unknown
-	? (...args: Args) => AsyncResult<Fn, Err>
+	? (...args: Args) => AsyncFunctionResult<Fn, Err>
 	: never;
 
 type WrapAsyncIterableOverload<Fn extends AsyncIterableFunction, Err extends Error> = Fn extends (...args: infer Args) => AsyncIterable<unknown>
-	? (...args: Args) => AsyncIteratableResult<Fn, Err>
+	? (...args: Args) => AsyncIteratableFunctionResult<Fn, Err>
 	: never;
 
 type WrapSyncOverload<Fn extends AnySyncFunction, Err extends Error> = Fn extends (...args: infer Args) => unknown
-	? (...args: Args) => SyncResult<Fn, Err>
+	? (...args: Args) => SyncFunctionResult<Fn, Err>
 	: never;
 
 type WrapSyncIterableOverload<Fn extends SyncIterableFunction, Err extends Error> = Fn extends (...args: infer Args) => Iterable<unknown>
-	? (...args: Args) => SyncIteratableResult<Fn, Err>
+	? (...args: Args) => SyncIteratableFunctionResult<Fn, Err>
 	: never;
 
-export type AsyncFunction<Fn extends (...args: any[]) => any> =
-	ReturnType<Fn> extends Promise<any>
-		? Fn
-		: never;
+export type AsyncFunction<Fn extends (...args: any[]) => any> =	ReturnType<Fn> extends Promise<any>
+	? Fn
+	: never;
 
 export type AsyncIterableFunction = (...args: any[]) => AsyncIterable<unknown>;
 
@@ -68,8 +67,8 @@ export type AsyncIteratorElement<T> =
 				T extends { [Symbol.asyncIterator]: (...args: unknown[]) => infer I } ? AsyncIteratorElement<I> :
 					unknown;
 
-export type AsyncResult<T extends (...args: unknown[]) => unknown, Err extends Error> = Promise<Result<Awaited<ReturnType<T>>, Err>>;
-export type AsyncIteratableResult<T extends (...args: unknown[]) => unknown, Err extends Error> = AsyncIterable<Result<AsyncIteratorElement<ReturnType<T>>, Err>, unknown, unknown>;
+export type AsyncFunctionResult<T extends (...args: unknown[]) => unknown, Err extends Error> = Promise<Result<Awaited<ReturnType<T>>, Err>>;
+export type AsyncIteratableFunctionResult<T extends (...args: unknown[]) => unknown, Err extends Error> = AsyncIterable<Result<AsyncIteratorElement<ReturnType<T>>, Err>, unknown, unknown>;
 
 export type PreserveAsyncOverloads<Fn extends AnyAsyncFunction, Err extends Error> = UnionToIntersection<WrapAsyncOverload<OverloadsUnion<Fn>, Err>>;
 export type PreserveAsyncIterableOverloads<Fn extends AsyncIterableFunction, Err extends Error> = UnionToIntersection<WrapAsyncIterableOverload<OverloadsUnion<Fn>, Err>>;
@@ -92,29 +91,29 @@ export type SyncIteratorElement<T> =
 			T extends { [Symbol.iterator]: (...args: unknown[]) => infer I } ? SyncIteratorElement<I> :
 				unknown;
 
-export type SyncResult<T extends (...args: unknown[]) => NotPromise<unknown>, Err extends Error> = Result<ReturnType<T>, Err>;
-export type SyncIteratableResult<T extends (...args: unknown[]) => unknown, Err extends Error> = Iterable<Result<SyncIteratorElement<ReturnType<T>>, Err>, unknown, unknown>;
+export type SyncFunctionResult<T extends (...args: unknown[]) => NotPromise<unknown>, Err extends Error> = Result<ReturnType<T>, Err>;
+export type SyncIteratableFunctionResult<T extends (...args: unknown[]) => unknown, Err extends Error> = Iterable<Result<SyncIteratorElement<ReturnType<T>>, Err>, unknown, unknown>;
 
 export function xtryifyAsync<Err extends Error, Fn extends AnyAsyncFunction = any>(fn: AsyncFunction<Fn>): PreserveAsyncOverloads<Fn, Err> {
-	return async function (...args: Parameters<Fn>): AsyncResult<Fn, Err> {
-		return xtryAsync(async () => fn(...args)) as AsyncResult<Fn, Err>;
+	return async function (...args: Parameters<Fn>): AsyncFunctionResult<Fn, Err> {
+		return xtryAsync(async () => fn(...args)) as AsyncFunctionResult<Fn, Err>;
 	} as PreserveAsyncOverloads<Fn, Err>;
 }
 
 export function xtryifyAsyncIterable<Err extends Error, Fn extends AsyncIterableFunction = any>(fn: Fn): PreserveAsyncIterableOverloads<Fn, Err> {
-	return function (...args: Parameters<Fn>): AsyncIteratableResult<Fn, Err> {
-		return xtryAsyncIterable(fn(...args)) as AsyncIteratableResult<Fn, Err>;
+	return function (...args: Parameters<Fn>): AsyncIteratableFunctionResult<Fn, Err> {
+		return xtryAsyncIterable(fn(...args)) as AsyncIteratableFunctionResult<Fn, Err>;
 	} as PreserveAsyncIterableOverloads<Fn, Err>;
 }
 
 export function xtryifySync<Err extends Error, Fn extends AnySyncFunction = any>(fn: SyncFunction<Fn>): PreserveSyncOverloads<Fn, Err> {
-	return function (...args: Parameters<Fn>): SyncResult<Fn, Err> {
-		return xtrySync(() => fn(...args)) as SyncResult<Fn, Err>;
+	return function (...args: Parameters<Fn>): SyncFunctionResult<Fn, Err> {
+		return xtrySync(() => fn(...args)) as SyncFunctionResult<Fn, Err>;
 	} as PreserveSyncOverloads<Fn, Err>;
 }
 
 export function xtryifySyncIterable<Err extends Error, Fn extends SyncIterableFunction = any>(fn: Fn): PreserveSyncIterableOverloads<Fn, Err> {
-	return function (...args: Parameters<Fn>): SyncIteratableResult<Fn, Err> {
-		return xtrySyncIterable(fn(...args)) as SyncIteratableResult<Fn, Err>;
+	return function (...args: Parameters<Fn>): SyncIteratableFunctionResult<Fn, Err> {
+		return xtrySyncIterable(fn(...args)) as SyncIteratableFunctionResult<Fn, Err>;
 	} as PreserveSyncIterableOverloads<Fn, Err>;
 }
