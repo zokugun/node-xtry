@@ -1,7 +1,7 @@
 {
 	"name": "@zokugun/xtry",
 	"description": "simple try/catch wrapper returning Result",
-	"version": "0.10.1",
+	"version": "0.11.0",
 	"author": {
 		"name": "Baptiste Augrain",
 		"email": "daiyam@zokugun.org"

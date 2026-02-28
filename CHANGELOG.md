@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.11.0 | 2026-03-01
+- rename extends `AsyncResult` type as `AsyncFunctionResult` (`SyncResult` => `SyncFunctionResult`)
+- add `AsyncResult`, `DResult` and `AsyncDResult` types
+
 ## v0.10.1 | 2026-02-12
 - update dev dependencies
 
