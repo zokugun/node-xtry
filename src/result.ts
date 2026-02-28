@@ -11,6 +11,9 @@ export type Failure<E> = {
 };
 
 export type Result<T, E> = Success<T> | Failure<E>;
+export type AsyncResult<T, E> = Promise<Result<T, E>>;
+export type DResult<T = void, E = string> = Result<T, E>;
+export type AsyncDResult<T = void, E = string> = AsyncResult<T, E>;
 
 export function ok(): Success<void>;
 export function ok<T>(value: T): Success<T>;

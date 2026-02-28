@@ -6,7 +6,7 @@ export { parseJSON, parseJson } from './json.js';
 export type { YResult, YSuccess, YFailure } from './partial.js';
 export { yok, yerr, yres as yresUnknown, yresAsync as yres, yresSync, yep, YOK, YOK_FALSE, YOK_NULL, YOK_TRUE, YOK_UNDEFINED } from './partial.js';
 
-export type { Success, Failure, Result } from './result.js';
+export type { Success, Failure, Result, AsyncResult, DResult, AsyncDResult } from './result.js';
 export { ok, err, OK, OK_FALSE, OK_NULL, OK_TRUE, OK_UNDEFINED } from './result.js';
 
 export { stringifyError } from './stringify-error.js';
