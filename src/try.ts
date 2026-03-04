@@ -28,11 +28,8 @@ export function xtry<T, E = unknown>(iterable: AsyncIterableCallback<T>, handler
 export function xtry<T, E = unknown>(func: NonPromiseCallback<T>, handler?: ErrorHandler<E>): VoidableResult<T, E>;
 export function xtry<T, E = unknown>(func: PromiseCallback<T>, handler?: ErrorHandler<E>): Promise<VoidableResult<T, E>>;
 export function xtry<T, E = unknown>(func: Callback<T> | SyncIterableCallback<T> | AsyncIterableCallback<T>, handler?: ErrorHandler<E>): MaybePromise<VoidableResult<T, E>> | SyncIterableResult<T, E> | AsyncIterableResult<T, E> { // {{{
-	// eslint-disable-next-line @typescript-eslint/promise-function-async
-	const run = func instanceof Function ? func : () => func;
-
 	try {
-		const value = run();
+		const value = typeof func === 'function' ? func() : func;
 
 		if(isPromiseLike(value as MaybePromise<T>)) {
 			return Promise.resolve(value as MaybePromise<T>).then(
@@ -72,7 +69,7 @@ export function xtrySync<T, E = unknown>(func: NonPromiseCallback<T>, handler?: 
 
 export async function xtryAsync<T, E = unknown>(func: PromiseCallback<T>, handler?: ErrorHandler<E>): Promise<VoidableResult<T, E>> { // {{{
 	try {
-		const value = await (func instanceof Promise ? func : Promise.resolve().then(func));
+		const value = await (func instanceof Promise || isAsyncIterable<T>(func) ? func : Promise.resolve().then(func));
 
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return ok(value) as any;
@@ -83,25 +80,23 @@ export async function xtryAsync<T, E = unknown>(func: PromiseCallback<T>, handle
 } // }}}
 
 export function xtrySyncIterable<T, E = unknown>(iterable: Iterable<T> | (() => Iterable<T>), handler?: ErrorHandler<E>): Iterable<VoidableResult<T, E>> { // {{{
-	const generator = iterable instanceof Function ? iterable : () => iterable;
-
 	function * iterate(): Generator<VoidableResult<T, E>, void, undefined> {
-		let source: Iterable<T>;
+		let generator: Iterable<T>;
 
 		try {
-			source = generator();
+			generator = typeof iterable === 'function' ? iterable() : iterable;
 		}
 		catch (error) {
 			yield handleError<T, E>(handler, error);
 			return;
 		}
 
-		if(!source || typeof source[Symbol.iterator] !== 'function') {
+		if(!generator || typeof generator[Symbol.iterator] !== 'function') {
 			yield handleError<T, E>(handler, new TypeError('xtryIterable expects an Iterable'));
 			return;
 		}
 
-		const iterator = source[Symbol.iterator]();
+		const iterator = generator[Symbol.iterator]();
 
 		while(true) {
 			let step: IteratorResult<T>;
@@ -126,7 +121,7 @@ export function xtrySyncIterable<T, E = unknown>(iterable: Iterable<T> | (() => 
 } // }}}
 
 export function xtryAsyncIterable<T, E = unknown>(iterable: AsyncIterable<T> | Promise<AsyncIterable<T>> | (() => MaybePromise<AsyncIterable<T>>), handler?: ErrorHandler<E>): AsyncIterable<VoidableResult<T, E>> { // {{{
-	const generator = iterable instanceof Function ? iterable : async () => iterable;
+	const generator = typeof iterable === 'function' ? iterable : async () => iterable;
 
 	async function * iterate(): AsyncGenerator<VoidableResult<T, E>, void, undefined> {
 		let source: AsyncIterable<T>;
