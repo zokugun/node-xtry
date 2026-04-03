@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Get Version
         run: |
           # Get the latest tag
@@ -28,7 +29,7 @@ jobs:
       - name: Check Existing Release
         run: |
           # Try to get the release information
-          RELEASE_INFO=$(gh release view ${{ env.VERSION }} --json assets,url 2>/dev/null || echo "")
+          RELEASE_INFO=$(gh release view ${VERSION} --json assets,url 2>/dev/null || echo "")
           if [ ! -z "$RELEASE_INFO" ]; then
             echo "Release exists"
             echo "RELEASE_EXISTS=yes" >> $GITHUB_ENV
@@ -47,16 +48,17 @@ jobs:
       - name: Download Existing TGZ
         if: env.RELEASE_EXISTS == 'yes' && env.TGZ_URL != ''
         run: |
-          gh api ${{ env.TGZ_URL }} --header 'Accept: application/octet-stream' > ${{ env.TGZ_NAME }}
-          echo "CHECKSUM=$(sha256sum ${{ env.TGZ_NAME }} | cut -d ' ' -f 1)" >> $GITHUB_ENV
+          gh api ${TGZ_URL} --header 'Accept: application/octet-stream' > ${TGZ_NAME}
+          echo "CHECKSUM=$(sha256sum ${TGZ_NAME} | cut -d ' ' -f 1)" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Setup Node.js
         if: env.RELEASE_EXISTS == 'no'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: "24"
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
       - name: Build
         if: env.RELEASE_EXISTS == 'no'
         run: |
@@ -70,7 +72,7 @@ jobs:
       - name: Get Changelog
         if: env.RELEASE_EXISTS == 'no'
         run: |
-          CHANGELOG_ENTRY=$(node .github/scripts/get-changelog.js ${{ env.VERSION }})
+          CHANGELOG_ENTRY=$(node .github/scripts/get-changelog.js ${VERSION})
           # Properly handle multiline output in GitHub Actions
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "CHANGELOG_ENTRY<<$EOF" >> $GITHUB_ENV
@@ -78,7 +80,7 @@ jobs:
           echo "$EOF" >> $GITHUB_ENV
       - name: Release
         if: env.RELEASE_EXISTS == 'no'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           files: |
             ${{ env.TGZ_NAME }}
@@ -96,4 +98,4 @@ jobs:
             ${{ env.CHECKSUM }}
             ```
       - name: Publish to NPM Registry
-        run: npm publish --access=public
+        run: npm publish --provenance --access=public
