@@ -13,3 +13,5 @@ artifacts:
     version: 0.6.2
   "@daiyam/artifact-test-vitest-ts":
     version: 0.3.0
+  "@daiyam/artifact-gh-issuehub":
+    version: 0.4.1

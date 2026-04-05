@@ -13,7 +13,7 @@
 		"url": "git+https://github.com/zokugun/node-xtry.git"
 	},
 	"bugs": {
-		"url": "https://github.com/zokugun/node-xtry/issues"
+		"url": "https://github.com/zokugun/node-xtry/discussions/categories/issue-triage"
 	},
 	"type": "module",
 	"exports": {
@@ -65,7 +65,7 @@
 		"build:package": "tsc-leda update-package",
 		"ci:lint": "zizmor .",
 		"ci:lint:fix": "zizmor . --fix=all",
-		"ci:update": "PINACT_MIN_AGE=7 pinact",
+		"ci:update": "PINACT_MIN_AGE=7 pinact run",
 		"clean": "rimraf lib .test",
 		"compile:src": "tsc -p src",
 		"compile:test": "tsc -p test",
