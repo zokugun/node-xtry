@@ -1,6 +1,7 @@
 name: Pre-Discussed and Approved Topics
-description: |-
-  Only for topics already discussed and approved in the GitHub Discussions section.
+
+description: Only for topics already discussed and approved in the GitHub Discussions section.
+
 body:
   - type: markdown
     attributes:
@@ -9,11 +10,12 @@ body:
   - type: checkboxes
     id: checkbox
     attributes:
-      label: 'Sanity check'
+      label: Sanity check
       options:
         - label: |-
             I read https://github.com/zokugun/node-xtry/issues/1
           required: true
+
   - type: textarea
     id: body
     attributes:
