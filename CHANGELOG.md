@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.11.2 | 2026-04-07
+- use locked dependencies
+- use GitHub Environment to publish
+
 ## v0.11.1 | 2026-03-04
 - `xtryAsync` awaits async iterator
 
