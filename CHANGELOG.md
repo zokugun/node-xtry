@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.11.4 | 2026-04-07
+- readd GitHub Environment when publishing
+
 ## v0.11.3 | 2026-04-07
 - testing NPM environment requirement
 
