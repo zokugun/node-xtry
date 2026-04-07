@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.11.3 | 2026-04-07
+- testing NPM environment requirement
+
 ## v0.11.2 | 2026-04-07
 - use locked dependencies
 - use GitHub Environment to publish
