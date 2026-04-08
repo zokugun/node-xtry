@@ -7,6 +7,7 @@ body:
       value: |-
         > [!IMPORTANT]
         > Please read through [the Discussion rules](https://github.com/zokugun/node-xtry/discussions/2) and check for both existing [Discussions](https://github.com/zokugun/node-xtry/discussions?discussions_q=) and [Issues](https://github.com/zokugun/node-xtry/issues?q=sort%3Areactions-desc) prior to opening a new Discussion.
+
   - type: markdown
     attributes:
       value: "# Issue Details"
@@ -35,17 +36,16 @@ body:
   - type: textarea
     attributes:
       label: Reproduction Steps
-      description: |-
-        Provide a detailed set of step-by-step instructions for reproducing this issue.
+      description: Provide a detailed set of step-by-step instructions for reproducing this issue.
     validations:
       required: true
 
   - type: textarea
     attributes:
       label: Environment
-      description: Paste the output of `npx envinfo --system --binaries` here.
+      description: Paste the output of `npx envinfo --system --binaries --npmPackages` here.
       render: text
-      placeholder: System, Binaries
+      placeholder: System, Binaries, npmPackages
     validations:
       required: true
 
@@ -55,6 +55,7 @@ body:
         # User Acknowledgements
         > [!TIP]
         > Use these links to review the existing [Discussions](https://github.com/zokugun/node-xtry/discussions?discussions_q=) and [Issues](https://github.com/zokugun/node-xtry/issues?q=sort%3Areactions-desc).
+
   - type: checkboxes
     attributes:
       label: Validations

@@ -10,8 +10,8 @@ artifacts:
   "@daiyam/artifact-npm-zokugun":
     version: 0.2.2
   "@daiyam/artifact-npm":
-    version: 0.7.4
+    version: 0.7.6
   "@daiyam/artifact-test-vitest-ts":
-    version: 0.4.0
+    version: 0.4.1
   "@daiyam/artifact-gh-issuehub":
-    version: 0.4.4
+    version: 0.5.1

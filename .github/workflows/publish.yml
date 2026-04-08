@@ -25,10 +25,12 @@ jobs:
         run: |
           # Get the latest tag
           LATEST_TAG=$(git tag --sort=-v:refname | head -n1)
+
           if [ -z "$LATEST_TAG" ]; then
             echo "No tags found in the repository"
             exit 1
           fi
+
           echo "VERSION=$LATEST_TAG" >> $GITHUB_ENV
           echo "Using version: $LATEST_TAG"
 
@@ -36,11 +38,14 @@ jobs:
         run: |
           # Try to get the release information
           RELEASE_INFO=$(gh release view ${VERSION} --json assets,url 2>/dev/null || echo "")
+
           if [ ! -z "$RELEASE_INFO" ]; then
             echo "Release exists"
             echo "RELEASE_EXISTS=yes" >> $GITHUB_ENV
+
             # Get the TGZ asset URL from the release
             TGZ_URL=$(echo $RELEASE_INFO | jq -r '.assets[] | select(.name | endswith(".tgz")) | .url')
+
             if [ ! -z "$TGZ_URL" ]; then
               echo "Found existing TGZ file"
               echo "TGZ_URL=$TGZ_URL" >> $GITHUB_ENV
@@ -73,8 +78,10 @@ jobs:
         run: |
           npm ci
           npm pack
+
           TGZ_NAME=$(ls *.tgz)
           CHECKSUM=$(sha256sum $TGZ_NAME | cut -d ' ' -f 1)
+
           echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
           echo "CHECKSUM=$CHECKSUM" >> $GITHUB_ENV
           echo "$CHECKSUM" > "$TGZ_NAME.sha256"
@@ -83,8 +90,10 @@ jobs:
         if: env.RELEASE_EXISTS == 'no'
         run: |
           CHANGELOG_ENTRY=$(node .github/scripts/get-changelog.js ${VERSION})
+
           # Properly handle multiline output in GitHub Actions
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+
           echo "CHANGELOG_ENTRY<<$EOF" >> $GITHUB_ENV
           echo "$CHANGELOG_ENTRY" >> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
