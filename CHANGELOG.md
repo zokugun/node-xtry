@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.11.5 | 2026-04-21
+- fix `xdefer` typings
+
 ## v0.11.4 | 2026-04-07
 - readd GitHub Environment when publishing
 
