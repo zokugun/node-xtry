@@ -146,7 +146,7 @@ To minimize allocations when returning the same `Success` shape, you can reuse t
 
 ### Try helpers
 
-```
+```typescript
 function xtry<T, E>(func: (() => MaybePromise<T>) | Promise<T>, handler?: (error: unknown) => void | E): MaybePromise<Result<T, E>>;
 function xtry<T, E>(iterable: (() => Iterable<T>) | Iterable<T>, handler?: (error: unknown) => void | E): Iterable<Result<T, E>>;
 function xtry<T, E>(iterable: (() => AsyncIterable<T>) | AsyncIterable<T>, handler?: (error: unknown) => void | E): AsyncIterable<Result<T, E>>;
