@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.11.6 | 2026-05-10
+- the `bind` argument of `xdefer` is renamed as `thisArg` and allows `null`
+
 ## v0.11.5 | 2026-04-21
 - fix `xdefer` typings
 
