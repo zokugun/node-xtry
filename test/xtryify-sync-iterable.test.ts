@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
-import { xtryifySyncIterable } from '../src/index.js';
+
 import { failsSyncIterable, successSyncIterable } from './utils/helpers.js';
+import { xtryifySyncIterable } from '../src/index.js';
 
 it('sucess', () => { // {{{
 	const wrapped = xtryifySyncIterable(successSyncIterable);
@@ -19,8 +20,7 @@ it('fails', () => { // {{{
 
 	expect(results).to.have.lengthOf(2);
 
-	const success = results[0];
-	const failure = results[1];
+	const [success, failure] = results;
 
 	expect(success?.fails).to.equals(false);
 	expect(success?.value).to.equals(0);

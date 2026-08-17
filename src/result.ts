@@ -1,35 +1,39 @@
-export type Success<T> = {
-	fails: false;
-	value: T;
-	error: undefined;
-};
+export type AsyncDResult<T = void, E = string> = AsyncResult<T, E>;
+
+export type AsyncResult<T, E> = Promise<Result<T, E>>;
+
+export type DResult<T = void, E = string> = Result<T, E>;
 
 export type Failure<E> = {
+	error: E;
 	fails: true;
 	value: undefined;
-	error: E;
 };
 
-export type Result<T, E> = Success<T> | Failure<E>;
-export type AsyncResult<T, E> = Promise<Result<T, E>>;
-export type DResult<T = void, E = string> = Result<T, E>;
-export type AsyncDResult<T = void, E = string> = AsyncResult<T, E>;
+export type Result<T, E> = Failure<E> | Success<T>;
+
+export type Success<T> = {
+	error: undefined;
+	fails: false;
+	value: T;
+};
+
+export function err<E>(error: E): Failure<E> {
+	return {
+		error,
+		fails: true,
+		value: undefined,
+	};
+}
 
 export function ok(): Success<void>;
 export function ok<T>(value: T): Success<T>;
 export function ok<T>(value?: T): Success<T> {
 	return {
-		fails: false,
-		value: value as T,
 		error: undefined,
-	};
-}
-
-export function err<E>(error: E): Failure<E> {
-	return {
-		fails: true,
-		value: undefined,
-		error,
+		fails: false,
+		// eslint-disable-next-line ts/no-unsafe-type-assertion
+		value: value as T,
 	};
 }
 

@@ -95,6 +95,14 @@
 		"@types/node": "20.19.43",
 		"@vitest/coverage-v8": "4.1.10",
 		"@vitest/ui": "4.1.10",
+		"@zokugun/eslint-config": "0.2.0",
+		"@zokugun/eslint-config-data": "0.1.0",
+		"@zokugun/eslint-config-js": "0.1.0",
+		"@zokugun/eslint-config-md": "0.3.0",
+		"@zokugun/eslint-config-nodejs": "0.1.0",
+		"@zokugun/eslint-config-style": "0.2.0",
+		"@zokugun/eslint-config-test": "0.1.0",
+		"@zokugun/eslint-config-ts": "0.2.0",
 		"@zokugun/fs-extra-plus": "0.5.0",
 		"@zokugun/tsc-leda": "0.4.3",
 		"eslint": "10.8.1",
@@ -122,8 +130,9 @@
 		}
 	},
 	"allowScripts": {
+		"@zokugun/cli-utils": true,
 		"fsevents": true,
-		"@zokugun/cli-utils": true
+		"unrs-resolver": true
 	},
 	"keywords": [
 		"catch",

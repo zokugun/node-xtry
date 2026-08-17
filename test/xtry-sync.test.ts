@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
-import { xtrySync } from '../src/index.js';
+
 import { failsSync, successSync } from './utils/helpers.js';
+import { xtrySync } from '../src/index.js';
 
 it('success', () => { // {{{
 	const { fails, value } = xtrySync(successSync);

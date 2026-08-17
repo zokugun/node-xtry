@@ -1,6 +1,7 @@
+import type { Callback, MaybePromise, NonPromiseCallback, PromiseCallback } from './utils/types.js';
+
 import { type Failure, ok, type Result, type Success } from './result.js';
 import { isPromiseLike } from './utils/is-promise-like.js';
-import { type MaybePromise, type Callback, type NonPromiseCallback, type PromiseCallback } from './utils/types.js';
 
 export type XDeferAsync<E> = {
 	(): Promise<Success<void>>;
@@ -16,16 +17,16 @@ export type XDeferSync<E> = {
 	<T, F>(result: Result<T, F>): Result<T, E | F>;
 };
 
-/* eslint-disable @typescript-eslint/unified-signatures */
+/* eslint-disable ts/unified-signatures */
 export function xdefer<E, Args extends unknown[]>(callback: NonPromiseCallback<Result<void, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E>;
 export function xdefer<E, Args extends unknown[]>(callback: NonPromiseCallback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E>;
 export function xdefer<E>(callback: Promise<Result<void, E>>): XDeferAsync<E>;
 export function xdefer<E>(callback: Promise<Result<unknown, E>>): XDeferAsync<E>;
 export function xdefer<E, Args extends unknown[]>(callback: (...args: Args) => Promise<Result<void, E>>, thisArg?: object | null, ...args: Args): XDeferAsync<E>;
 export function xdefer<E, Args extends unknown[]>(callback: (...args: Args) => Promise<Result<unknown, E>>, thisArg?: object | null, ...args: Args): XDeferAsync<E>;
-/* eslint-enable @typescript-eslint/unified-signatures */
-export function xdefer<E, Args extends unknown[]>(callback: Callback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E> | XDeferAsync<E> {
-	// eslint-disable-next-line @typescript-eslint/promise-function-async
+/* eslint-enable ts/unified-signatures */
+export function xdefer<E, Args extends unknown[]>(callback: Callback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferAsync<E> | XDeferSync<E> {
+	// eslint-disable-next-line ts/promise-function-async, ts/no-unsafe-type-assertion
 	return ((result?: Result<unknown, E>) => {
 		const finalize = (deferResult: Result<unknown, E>): Result<unknown, E> | Success<void> => {
 			if(deferResult.fails) {
@@ -43,6 +44,7 @@ export function xdefer<E, Args extends unknown[]>(callback: Callback<Result<unkn
 
 		if(callback instanceof Function) {
 			if(thisArg) {
+				// eslint-disable-next-line ts/no-unsafe-type-assertion
 				deferredValue = Reflect.apply(callback, thisArg, args) as MaybePromise<Result<unknown, E>>;
 			}
 			else {
@@ -58,16 +60,17 @@ export function xdefer<E, Args extends unknown[]>(callback: Callback<Result<unkn
 		}
 
 		return finalize(deferredValue);
-	}) as XDeferSync<E> | XDeferAsync<E>;
+	}) as XDeferAsync<E> | XDeferSync<E>;
 }
 
-/* eslint-disable @typescript-eslint/unified-signatures */
+/* eslint-disable ts/unified-signatures */
 export function xdeferAsync<E>(callback: Promise<Result<void, E>>): XDeferAsync<E>;
 export function xdeferAsync<E>(callback: Promise<Result<unknown, E>>): XDeferAsync<E>;
 export function xdeferAsync<E, Args extends unknown[]>(callback: (...args: Args) => Promise<Result<void, E>>, thisArg?: object | null, ...args: Args): XDeferAsync<E>;
 export function xdeferAsync<E, Args extends unknown[]>(callback: (...args: Args) => Promise<Result<unknown, E>>, thisArg?: object | null, ...args: Args): XDeferAsync<E>;
-/* eslint-enable @typescript-eslint/unified-signatures */
+/* eslint-enable ts/unified-signatures */
 export function xdeferAsync<E, Args extends unknown[]>(callback: PromiseCallback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferAsync<E> {
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	return (async (result?: Result<unknown, E>) => {
 		let deferResult: Result<unknown, E>;
 
@@ -93,13 +96,14 @@ export function xdeferAsync<E, Args extends unknown[]>(callback: PromiseCallback
 	}) as XDeferAsync<E>;
 }
 
-/* eslint-disable @typescript-eslint/unified-signatures */
+/* eslint-disable ts/unified-signatures */
 export function xdeferSync<E>(callback: NonPromiseCallback<Result<void, E>>): XDeferSync<E>;
 export function xdeferSync<E>(callback: NonPromiseCallback<Result<unknown, E>>): XDeferSync<E>;
 export function xdeferSync<E, Args extends unknown[]>(callback: NonPromiseCallback<Result<void, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E>;
 export function xdeferSync<E, Args extends unknown[]>(callback: NonPromiseCallback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E>;
-/* eslint-enable @typescript-eslint/unified-signatures */
+/* eslint-enable ts/unified-signatures */
 export function xdeferSync<E, Args extends unknown[]>(callback: NonPromiseCallback<Result<unknown, E>, Args>, thisArg?: object | null, ...args: Args): XDeferSync<E> {
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	return ((result?: Result<unknown, E>) => {
 		const deferResult = thisArg ? callback.apply(thisArg, args) : callback(...args);
 

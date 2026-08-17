@@ -1,44 +1,51 @@
-import { type Result, type Failure, type Success } from './result.js';
+import type { Failure, Result, Success } from './result.js';
+import type { MaybePromise, NotPromise } from './utils/types.js';
+
 import { isPromiseLike } from './utils/is-promise-like.js';
-import { type MaybePromise, type NotPromise } from './utils/types.js';
-
-export type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
-
-export type YSuccess<T> = Success<T> & {
-	success: true;
-};
 
 export type YFailure<M> = {
-	fails: false;
-	success: false;
-	miscue: M;
-	value: undefined;
 	error: undefined;
+	fails: false;
+	miscue: M;
+	success: false;
+	value: undefined;
 };
+
+export type YResult<T, E, M> = Failure<E> | YFailure<M> | YSuccess<T>;
+
+export type YSuccess<T> = {
+	success: true;
+} & Success<T>;
+
+type YRResult<T, E> = Failure<E> | YSuccess<T>;
+
+export function yep<T>(result: Success<T>): YSuccess<T> {
+	return {
+		...result,
+		success: true,
+	};
+}
+export function yerr<M>(miscue: M): YFailure<M> {
+	return {
+		error: undefined,
+		fails: false,
+		miscue,
+		success: false,
+		value: undefined,
+	};
+}
 
 export function yok(): YSuccess<void>;
 export function yok<T>(value: T): YSuccess<T>;
 export function yok<T>(value?: T): YSuccess<T> {
 	return {
+		error: undefined,
 		fails: false,
 		success: true,
+		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		value: value as T,
-		error: undefined,
 	};
 }
-
-export function yerr<M>(miscue: M): YFailure<M> {
-	return {
-		fails: false,
-		success: false,
-		miscue,
-		value: undefined,
-		error: undefined,
-	};
-}
-
-type YRResult<T, E> = Failure<E> | YSuccess<T>;
-
 export function yres<T, E>(result: NotPromise<Result<T, E>>): YRResult<T, E>;
 export function yres<T, E>(result: Promise<Result<T, E>>): Promise<YRResult<T, E>>;
 export function yres<T, E>(result: MaybePromise<Result<T, E>>): MaybePromise<YRResult<T, E>> {
@@ -49,23 +56,16 @@ export function yres<T, E>(result: MaybePromise<Result<T, E>>): MaybePromise<YRR
 	return yresSync(result);
 }
 
+export async function yresAsync<T, E>(promise: Promise<Result<T, E>>): Promise<YRResult<T, E>> {
+	return promise.then(yresSync);
+}
+
 export function yresSync<T, E>(result: NotPromise<Result<T, E>>): YRResult<T, E> {
 	if(result.fails) {
 		return result;
 	}
 
 	return yep(result);
-}
-
-export async function yresAsync<T, E>(promise: Promise<Result<T, E>>): Promise<YRResult<T, E>> {
-	return promise.then(yresSync);
-}
-
-export function yep<T>(result: Success<T>): YSuccess<T> {
-	return {
-		...result,
-		success: true,
-	};
 }
 
 export const YOK = Object.freeze(yok());

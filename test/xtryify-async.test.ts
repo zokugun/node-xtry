@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
-import { xtryifyAsync } from '../src/index.js';
+
 import { failsAsync, successAsync } from './utils/helpers.js';
+import { xtryifyAsync } from '../src/index.js';
 
 it('sucess', async () => { // {{{
 	const wrapped = xtryifyAsync(successAsync);

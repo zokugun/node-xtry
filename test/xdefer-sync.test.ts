@@ -1,7 +1,9 @@
-import { it, expect, expectTypeOf } from 'vitest';
-import { err, ok, xdeferSync } from '../src/index.js';
+import type { TestResult } from './utils/types.js';
 import type { Failure, Result } from '../src/result.js';
-import { type TestResult } from './utils/types.js';
+
+import { expect, expectTypeOf, it } from 'vitest';
+
+import { err, ok, xdeferSync } from '../src/index.js';
 
 it('defer-ok - value-ok-success', () => { // {{{
 	const defer = xdeferSync(() => ok() as Result<void, string>);

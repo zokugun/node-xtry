@@ -1,6 +1,8 @@
 import { expectTypeOf, it } from 'vitest';
+
 import { parseJson, type Result } from '../src/index.js';
 
+// eslint-disable-next-line ts/no-unsafe-function-type
 type NotFunction<T> = T extends Function ? never : T;
 
 it('returnType', () => {

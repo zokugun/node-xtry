@@ -1,19 +1,19 @@
 export type { XDeferAsync, XDeferSync } from './defer.js';
-export { xdefer as xdeferUnknown, xdeferAsync, xdeferSync as xdefer } from './defer.js';
+export { xdeferSync as xdefer, xdeferAsync, xdefer as xdeferUnknown } from './defer.js';
 
 export { parseJSON, parseJson } from './json.js';
 
-export type { YResult, YSuccess, YFailure } from './partial.js';
-export { yok, yerr, yres as yresUnknown, yresAsync, yresSync as yres, yep, YOK, YOK_FALSE, YOK_NULL, YOK_TRUE, YOK_UNDEFINED } from './partial.js';
+export type { YFailure, YResult, YSuccess } from './partial.js';
+export { yep, yerr, yok, YOK, YOK_FALSE, YOK_NULL, YOK_TRUE, YOK_UNDEFINED, yresSync as yres, yresAsync, yres as yresUnknown } from './partial.js';
 
-export type { Success, Failure, Result, AsyncResult, DResult, AsyncDResult } from './result.js';
-export { ok, err, OK, OK_FALSE, OK_NULL, OK_TRUE, OK_UNDEFINED } from './result.js';
+export type { AsyncDResult, AsyncResult, DResult, Failure, Result, Success } from './result.js';
+export { err, ok, OK, OK_FALSE, OK_NULL, OK_TRUE, OK_UNDEFINED } from './result.js';
 
 export { stringifyError } from './stringify-error.js';
 
 export { toStringFailure } from './to-string-failure.js';
 
-export { xtry as xtryUnknown, xtryAsync, xtryAsyncIterable, xtrySync as xtry, xtrySyncIterable as xtryIterable } from './try.js';
+export { xtrySync as xtry, xtryAsync, xtryAsyncIterable, xtrySyncIterable as xtryIterable, xtry as xtryUnknown } from './try.js';
 
-export type { AsyncFunction, AsyncIterableFunction, AsyncIteratableFunctionResult, AsyncIteratorElement, AsyncFunctionResult, PreserveAsyncIterableOverloads, PreserveAsyncOverloads, PreserveSyncIterableOverloads, PreserveSyncOverloads, SyncFunction, SyncIterableFunction, SyncIteratableFunctionResult, SyncIteratorElement, SyncFunctionResult } from './tryify.js';
-export { xtryifyAsync, xtryifyAsyncIterable, xtryifySync as xtryify, xtryifySyncIterable as xtryifyIterable } from './tryify.js';
+export type { AsyncFunction, AsyncFunctionResult, AsyncIterableFunction, AsyncIteratableFunctionResult, AsyncIteratorElement, PreserveAsyncIterableOverloads, PreserveAsyncOverloads, PreserveSyncIterableOverloads, PreserveSyncOverloads, SyncFunction, SyncFunctionResult, SyncIterableFunction, SyncIteratableFunctionResult, SyncIteratorElement } from './tryify.js';
+export { xtryifySync as xtryify, xtryifyAsync, xtryifyAsyncIterable, xtryifySyncIterable as xtryifyIterable } from './tryify.js';

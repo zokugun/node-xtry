@@ -1,12 +1,13 @@
 import { expect, it } from 'vitest';
-import { xtryAsyncIterable, type Result } from '../src/index.js';
+
 import { failsAsyncIterable, successAsyncIterable } from './utils/helpers.js';
+import { type Result, xtryAsyncIterable } from '../src/index.js';
 
 it('success', async () => {
 	const iterator = xtryAsyncIterable(successAsyncIterable());
 	const results: Array<Result<number, unknown>> = [];
 
-	for await (const result of iterator) {
+	for await(const result of iterator) {
 		results.push(result);
 	}
 
@@ -21,14 +22,13 @@ it('fails - no-handler', async () => {
 	const iterator = xtryAsyncIterable(failsAsyncIterable());
 	const results: Array<Result<number, unknown>> = [];
 
-	for await (const result of iterator) {
+	for await(const result of iterator) {
 		results.push(result);
 	}
 
 	expect(results).to.have.lengthOf(2);
 
-	const success = results[0];
-	const failure = results[1];
+	const [success, failure] = results;
 
 	expect(success?.fails).to.equals(false);
 	expect(success?.value).to.equals(0);
@@ -40,11 +40,11 @@ it('fails - with-handler', async () => {
 	const iterator = xtryAsyncIterable(failsAsyncIterable(), () => new Error('async-iterable-handler'));
 	const results: Array<Result<number, Error>> = [];
 
-	for await (const result of iterator) {
+	for await(const result of iterator) {
 		results.push(result);
 	}
 
-	const failure = results[1];
+	const [, failure] = results;
 
 	expect(failure?.fails).to.equals(true);
 	expect(failure?.error!.message).to.equals('async-iterable-handler');

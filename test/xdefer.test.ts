@@ -1,8 +1,10 @@
-import { describe, it, expect, expectTypeOf } from 'vitest';
-import { err, ok, xdefer } from '../src/index.js';
+import type { TestResult } from './utils/types.js';
 import type { Failure, Result, Success } from '../src/result.js';
+
+import { describe, expect, expectTypeOf, it } from 'vitest';
+
 import { cleanup } from './utils/cleanup.js';
-import { type TestResult } from './utils/types.js';
+import { err, ok, xdefer } from '../src/index.js';
 
 describe('async', () => {
 	it('defer-ok - value-ok', async () => { // {{{

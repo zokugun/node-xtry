@@ -1,9 +1,6 @@
 import { expect, it } from 'vitest';
-import { stringifyError, xtry } from '../src/index.js';
 
-function badSync(): number {
-	throw new Error('bad');
-}
+import { stringifyError, xtry } from '../src/index.js';
 
 function assertIsStringOrUndefined(_: string | undefined) {
 	void _;
@@ -11,6 +8,10 @@ function assertIsStringOrUndefined(_: string | undefined) {
 
 function assertIsUnknown(_: unknown) {
 	void _;
+}
+
+function badSync(): number {
+	throw new Error('bad');
 }
 
 it('log', () => { // {{{

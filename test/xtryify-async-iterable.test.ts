@@ -1,12 +1,13 @@
 import { expect, it } from 'vitest';
-import { type Result, xtryifyAsyncIterable } from '../src/index.js';
+
 import { failsAsyncIterable, successAsyncIterable } from './utils/helpers.js';
+import { type Result, xtryifyAsyncIterable } from '../src/index.js';
 
 it('sucess', async () => { // {{{
 	const wrapped = xtryifyAsyncIterable(successAsyncIterable);
 	const results: Array<Result<number, unknown>> = [];
 
-	for await (const result of wrapped()) {
+	for await(const result of wrapped()) {
 		results.push(result);
 	}
 
@@ -21,14 +22,13 @@ it('fails', async () => { // {{{
 	const wrapped = xtryifyAsyncIterable(failsAsyncIterable);
 	const results: Array<Result<number, unknown>> = [];
 
-	for await (const result of wrapped()) {
+	for await(const result of wrapped()) {
 		results.push(result);
 	}
 
 	expect(results).to.have.lengthOf(2);
 
-	const success = results[0];
-	const failure = results[1];
+	const [success, failure] = results;
 
 	expect(success?.fails).to.equals(false);
 	expect(success?.value).to.equals(0);

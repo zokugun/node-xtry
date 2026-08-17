@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { xtryAsync } from '../src/index.js';
+
 import { failsAsync, successAsync } from './utils/helpers.js';
+import { xtryAsync } from '../src/index.js';
 
 describe('async', () => {
 	it('success', async () => { // {{{

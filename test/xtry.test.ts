@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
+
+import { failsAsync, failsAsyncIterable, failsSync, failsSyncIterable, successAsync, successAsyncIterable, successSync, successSyncIterable } from './utils/helpers.js';
 import { type Result, xtry } from '../src/index.js';
-import { failsAsync, failsAsyncIterable, failsSyncIterable, failsSync, successAsync, successAsyncIterable, successSyncIterable, successSync } from './utils/helpers.js';
 
 describe('async', () => {
 	it('success', async () => { // {{{
@@ -95,7 +96,7 @@ describe('async-iterable', () => {
 		const wrapped = xtry(successAsyncIterable());
 		const results: Array<Result<number, unknown>> = [];
 
-		for await (const result of wrapped) {
+		for await(const result of wrapped) {
 			results.push(result);
 		}
 
@@ -106,7 +107,7 @@ describe('async-iterable', () => {
 		const wrapped = xtry(() => successAsyncIterable());
 		const results: Array<Result<number, unknown>> = [];
 
-		for await (const result of wrapped) {
+		for await(const result of wrapped) {
 			results.push(result);
 		}
 
@@ -117,7 +118,7 @@ describe('async-iterable', () => {
 		const wrapped = xtry(failsAsyncIterable());
 		const results: Array<Result<number, Error>> = [];
 
-		for await (const result of wrapped) {
+		for await(const result of wrapped) {
 			results.push(result as Result<number, Error>);
 		}
 
@@ -131,7 +132,7 @@ describe('async-iterable', () => {
 		const wrapped = xtry(failsAsyncIterable(), () => new Error('async-wrapped'));
 		const results: Array<Result<number, Error>> = [];
 
-		for await (const result of wrapped) {
+		for await(const result of wrapped) {
 			results.push(result);
 		}
 

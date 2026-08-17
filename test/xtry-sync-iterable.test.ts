@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
-import { xtrySyncIterable } from '../src/index.js';
+
 import { failsSyncIterable, successSyncIterable } from './utils/helpers.js';
+import { xtrySyncIterable } from '../src/index.js';
 
 it('success', () => {
 	const iterator = xtrySyncIterable(successSyncIterable());
@@ -19,8 +20,7 @@ it('fails - no-handler', () => {
 
 	expect(results).to.have.lengthOf(2);
 
-	const success = results[0];
-	const failure = results[1];
+	const [success, failure] = results;
 
 	expect(success?.fails).to.equals(false);
 	expect(success?.value).to.equals(0);
@@ -32,7 +32,7 @@ it('fails - with-handler', () => {
 	const iterator = xtrySyncIterable(failsSyncIterable(), () => new Error('iterable-handler'));
 	const results = Array.from(iterator);
 
-	const failure = results[1];
+	const [, failure] = results;
 
 	expect(failure?.fails).to.equals(true);
 	expect(failure?.error!.message).to.equals('iterable-handler');
