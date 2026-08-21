@@ -1,11 +1,13 @@
 [@zokugun/xtry](https://github.com/zokugun/node-xtry)
 =====================================================
 
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/@zokugun/xtry.svg?colorB=green)](https://www.npmjs.com/package/@zokugun/xtry)
-[![Donation](https://img.shields.io/badge/donate-ko--fi-green)](https://ko-fi.com/daiyam)
-[![Donation](https://img.shields.io/badge/donate-liberapay-green)](https://liberapay.com/daiyam/donate)
-[![Donation](https://img.shields.io/badge/donate-paypal-green)](https://paypal.me/daiyam99)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/@zokugun/xtry?color=brightgreen&label=npm)](https://www.npmjs.com/package/@zokugun/xtry)
+[![NodeJS Version](https://img.shields.io/badge/node.js-%3E%3D%2018-green)](#requirements)
+[![Modules](https://img.shields.io/badge/modules-ESM%20%7C%20CJS-green)](#requirements)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-f87171?logo=kofi&logoColor=white)](https://ko-fi.com/daiyam)
+[![Liberapay](https://img.shields.io/badge/Liberapay-facc15?logo=liberapay&logoColor=black)](https://liberapay.com/daiyam/donate)
+[![PayPal](https://img.shields.io/badge/PayPal-5277C3?logo=paypal&logoColor=white)](https://paypal.me/daiyam99)
 
 Simple `try/catch` wrappers that always return a `Result` discriminated union, plus ready-made helpers (`ok`, `err`) for predictable control flow.
 
@@ -22,6 +24,12 @@ Installation
 ```bash
 npm install @zokugun/xtry
 ```
+
+Requirements
+------------
+
+- **Node.js**: `v18` or higher
+- **Modules**: ECMAScript Modules (`ESM`) or CommonJS (`CJS`)
 
 Quick Start
 -----------
