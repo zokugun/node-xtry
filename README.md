@@ -124,7 +124,7 @@ function add(_x: string, _y: number): Result<number, MyError> {
 Tips
 ----
 
-- Narrow on `fails` first, then use other flags (`success`, custom `miscue` or `value`) for the happy-path branching.
+- Narrow on `fails` first, then use other flags (`success`, custom `issue` or `value`) for the happy-path branching.
 
 API Reference
 -------------
@@ -207,11 +207,11 @@ Because the returned function already encapsulates the try/catch logic, you can 
 
 ```typescript
 type YSuccess<T> = Success<T> & { success: true };
-type YFailure<M> = { fails: false; success: false; miscue: M; value: undefined; error: undefined };
-type YResult<T, E, M> = Failure<E> | YSuccess<T> | YFailure<M>;
+type YFailure<I> = { fails: false; success: false; issue: I; value: undefined; error: undefined };
+type YResult<T, E, I> = Failure<E> | YSuccess<T> | YFailure<I>;
 
 function yok<T>(value: T): YSuccess<T>;
-function yerr<M>(type: M): YFailure<M>;
+function yerr<I>(type: I): YFailure<I>;
 function yres<T, E>(result: MaybePromise<Result<T, E>>): MaybePromise<Failure<E> | YSuccess<T>>;
 function yresSync<T, E>(result: Result<T, E>): Failure<E> | YSuccess<T>;
 function yresAsync<T, E>(promise: Promise<Result<T, E>>): Promise<Failure<E> | YSuccess<T>>;

@@ -3,15 +3,15 @@ import type { MaybePromise, NotPromise } from './utils/types.js';
 
 import { isPromiseLike } from './utils/is-promise-like.js';
 
-export type YFailure<M> = {
+export type YFailure<I> = {
 	error: undefined;
 	fails: false;
-	miscue: M;
+	issue: I;
 	success: false;
 	value: undefined;
 };
 
-export type YResult<T, E, M> = Failure<E> | YFailure<M> | YSuccess<T>;
+export type YResult<T, E, I> = Failure<E> | YFailure<I> | YSuccess<T>;
 
 export type YSuccess<T> = {
 	success: true;
@@ -25,11 +25,11 @@ export function yep<T>(result: Success<T>): YSuccess<T> {
 		success: true,
 	};
 }
-export function yerr<M>(miscue: M): YFailure<M> {
+export function yerr<I>(issue: I): YFailure<I> {
 	return {
 		error: undefined,
 		fails: false,
-		miscue,
+		issue,
 		success: false,
 		value: undefined,
 	};
