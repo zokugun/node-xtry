@@ -253,18 +253,50 @@ function test(): Result<void, string> {
 
 - `xdefer` inspects the callback result: if it fails, it becomes the returned error unless the main result already failed.
 - Passing a promise (or async factory) makes the defer helper async-aware; `xdeferSync`/`xdeferAsync` let you pin the behavior explicitly for bundlers.
-- Calling the returned function with no arguments just runs the deferred work and yields `ok()`.
+- Calling the returnedfunction with no arguments just runs the deferred work and yields `ok()`.
+
+### Unwrap Helpers
+
+The unwrap entry point provides functional helpers for consuming `Result` values:
+
+```typescript
+import { map, match, unwrap, unwrapOr } from '@zokugun/xtry/unwrap';
+
+const content1 = unwrap(readFile(filePath)); // throw if the result failed
+const content2 = unwrapOr(readFile(filePath), 'fallback');
+const content3 = map(readFile(filePath), (value) => value.toString());
+
+const content4 = match(readFile(filePath), {
+   failure: (error) => `Failed: ${error}`,
+   success: (value) => `Value: ${value}`,
+});
+```
+
+```typescript
+function map<T, E, U>(result: Result<T, E>, transform: (value: T) => U): Result<U, E>;
+function match<T, E, R>(result: Result<T, E>, handlers: { failure: (error: E) => R; success: (value: T) => R }): R;
+function unwrap<T, E>(result: Result<T, E>): T;
+function unwrapOr<T, E, F>(result: Result<T, E>, fallback: F): F | T;
+```
+
+- `map` transforms successful values and preserves failures unchanged.
+- `match` invokes exactly one handler based on the result state.
+- `unwrap` returns the successful value, rethrows `Error` failures, and converts other failures to `Error` instances.
+- `unwrapOr` returns the successful value or the supplied fallback.
 
 Module Entry Points
 -------------------
 
 Choose the entry point that matches your environment and naming preferences:
 
-| Import Path           | Description                 | `xtry` Name                     | `xdefer` Name                         | Extra Alias                     |
-| --------------------- | --------------------------- | ------------------------------- | ------------------------------------- | ------------------------------- |
-| `@zokugun/xtry`       | Both sync, async and hybrid | `xtry`, `xtryAsync`, `xtrySync` | `xdefer`, `xdeferAsync`, `xdeferSync` | `yres`, `yresAsync`, `yresSync` |
-| `@zokugun/xtry/async` | Async-only                  | `xtryAsync` as `xtry`           | `xdeferAsync` as `xdefer`             | `yresAsync` as `yres`           |
-| `@zokugun/xtry/sync`  | Synchronous-only            | `xtrySync` as `xtry`            | `xdeferSync` as `xdefer`              | `yresSync` as `yres`            |
+| Import Path            | Description                  | `xtry` Name                     | `xdefer` Name                         | Extra Alias                     |
+| ---------------------- | ---------------------------- | ------------------------------- | ------------------------------------- | ------------------------------- |
+| `@zokugun/xtry`        | All sync, async and hybrid   | `xtry`, `xtryAsync`, `xtrySync` | `xdefer`, `xdeferAsync`, `xdeferSync` | `yres`, `yresAsync`, `yresSync` |
+| `@zokugun/xtry/async`  | Async-only                   | `xtryAsync` as `xtry`           | `xdeferAsync` as `xdefer`             | `yresAsync` as `yres`           |
+| `@zokugun/xtry/json`   | JSON helpers                 |                                 |                                       |                                 |
+| `@zokugun/xtry/result` | Result types, `ok` and `err` |                                 |                                       |                                 |
+| `@zokugun/xtry/sync`   | Synchronous-only             | `xtrySync` as `xtry`            | `xdeferSync` as `xdefer`              | `yresSync` as `yres`            |
+| `@zokugun/xtry/unwrap` | Unwrap helpers               |                                 |                                       |                                 |
 
 All modules share the same `Result`, `Partial`, and `stringifyError` exports, so you can swap entry points without refactoring types.
 

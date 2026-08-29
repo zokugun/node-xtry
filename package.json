@@ -35,6 +35,10 @@
 		"./sync": {
 			"import": "./lib/esm/sync.mjs",
 			"require": "./lib/cjs/sync.cjs"
+		},
+		"./unwrap": {
+			"import": "./lib/esm/unwrap.mjs",
+			"require": "./lib/cjs/unwrap.cjs"
 		}
 	},
 	"main": "lib/cjs/index.cjs",
@@ -55,6 +59,9 @@
 			],
 			"sync": [
 				"./lib/cjs/sync.d.cts"
+			],
+			"unwrap": [
+				"./lib/cjs/unwrap.d.cts"
 			]
 		}
 	},

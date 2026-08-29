@@ -17,3 +17,5 @@ export { xtrySync as xtry, xtryAsync, xtryAsyncIterable, xtrySyncIterable as xtr
 
 export type { AsyncFunction, AsyncFunctionResult, AsyncIterableFunction, AsyncIteratableFunctionResult, AsyncIteratorElement, PreserveAsyncIterableOverloads, PreserveAsyncOverloads, PreserveSyncIterableOverloads, PreserveSyncOverloads, SyncFunction, SyncFunctionResult, SyncIterableFunction, SyncIteratableFunctionResult, SyncIteratorElement } from './tryify.js';
 export { xtryifySync as xtryify, xtryifyAsync, xtryifyAsyncIterable, xtryifySyncIterable as xtryifyIterable } from './tryify.js';
+
+export { map, match, unwrap, unwrapOr } from './unwrap.js';
