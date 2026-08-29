@@ -3,6 +3,12 @@ import type { MaybePromise, NotPromise } from './utils/types.js';
 
 import { isPromiseLike } from './utils/is-promise-like.js';
 
+export type AsyncYDResult<T = void, E = string, I = string> = Promise<YResult<T, E, I>>;
+
+export type AsyncYResult<T, E, I> = Promise<YResult<T, E, I>>;
+
+export type YDResult<T = void, E = string, I = string> = YResult<T, E, I>;
+
 export type YFailure<I> = {
 	error: undefined;
 	fails: false;

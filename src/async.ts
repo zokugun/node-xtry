@@ -3,7 +3,7 @@ export { xdeferAsync as xdefer, xdeferSync, xdefer as xdeferUnknown } from './de
 
 export { parseJSON, parseJson } from './json.js';
 
-export type { YFailure, YResult, YSuccess } from './partial.js';
+export type { AsyncYDResult, AsyncYResult, YDResult, YFailure, YResult, YSuccess } from './partial.js';
 export { yep, yerr, yok, YOK, YOK_FALSE, YOK_NULL, YOK_TRUE, YOK_UNDEFINED, yresAsync as yres, yresSync, yres as yresUnknown } from './partial.js';
 
 export type { AsyncDResult, AsyncResult, DResult, Failure, Result, Success } from './result.js';
