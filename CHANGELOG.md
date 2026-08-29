@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.12.0 | 2026-08-29
+- add unwrap helpers
+- add helpers types for partial result
+- rename `miscue` as `issue` in partial result
+- replace `xo` with `eslint`
+
 ## v0.11.6 | 2026-05-10
 - the `bind` argument of `xdefer` is renamed as `thisArg` and allows `null`
 
