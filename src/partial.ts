@@ -42,7 +42,7 @@ export function yok<T>(value?: T): YSuccess<T> {
 		error: undefined,
 		fails: false,
 		success: true,
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 		value: value as T,
 	};
 }

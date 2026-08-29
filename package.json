@@ -1,6 +1,5 @@
 {
 	"name": "@zokugun/xtry",
-	"description": "simple try/catch wrapper returning Result",
 	"version": "0.11.6",
 	"author": {
 		"name": "Baptiste Augrain",
@@ -61,8 +60,8 @@
 	},
 	"scripts": {
 		"audit:fix": "npm audit fix --min-release-age=0",
-		"build": "npm run clean && npm run build:lib",
-		"build:lib": "tsc-leda generate",
+		"build": "npm run clean && npm run build:out",
+		"build:out": "tsc-leda generate",
 		"build:package": "tsc-leda update-package && npm run lint:package",
 		"ci:lint": "zizmor .",
 		"ci:lint:fix": "zizmor . --fix=all",
@@ -95,16 +94,17 @@
 		"@types/node": "20.19.43",
 		"@vitest/coverage-v8": "4.1.10",
 		"@vitest/ui": "4.1.10",
-		"@zokugun/eslint-config": "0.2.0",
-		"@zokugun/eslint-config-data": "0.1.0",
-		"@zokugun/eslint-config-js": "0.1.0",
-		"@zokugun/eslint-config-md": "0.3.0",
-		"@zokugun/eslint-config-nodejs": "0.1.0",
-		"@zokugun/eslint-config-style": "0.2.0",
-		"@zokugun/eslint-config-test": "0.1.0",
-		"@zokugun/eslint-config-ts": "0.2.0",
-		"@zokugun/fs-extra-plus": "0.5.0",
-		"@zokugun/tsc-leda": "0.4.3",
+		"@zokugun/eslint-config": "0.2.1",
+		"@zokugun/eslint-config-data": "0.2.1",
+		"@zokugun/eslint-config-glossary": "0.2.0",
+		"@zokugun/eslint-config-js": "0.2.1",
+		"@zokugun/eslint-config-md": "0.4.1",
+		"@zokugun/eslint-config-nodejs": "0.2.0",
+		"@zokugun/eslint-config-style": "0.3.1",
+		"@zokugun/eslint-config-test": "0.2.0",
+		"@zokugun/eslint-config-ts": "0.3.2",
+		"@zokugun/fs-extra-plus": "0.6.1",
+		"@zokugun/tsc-leda": "0.8.3",
 		"eslint": "10.8.1",
 		"fixpack": "4.0.0",
 		"fs-extra": "11.3.5",
@@ -121,6 +121,9 @@
 	"overrides": {
 		"@inquirer/core": {
 			"mute-stream": "3.0.0"
+		},
+		"@octokit/request": {
+			"content-type": "2.1.0"
 		},
 		"release-it": {
 			"undici": "7.29.0"

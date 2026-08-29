@@ -1,8 +1,8 @@
 [@zokugun/xtry](https://github.com/zokugun/node-xtry)
 =====================================================
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/@zokugun/xtry?color=brightgreen&label=npm)](https://www.npmjs.com/package/@zokugun/xtry)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/@zokugun/xtry?color=brightgreen)](https://www.npmjs.com/package/@zokugun/xtry)
 [![NodeJS Version](https://img.shields.io/badge/node.js-%3E%3D%2018-green)](#requirements)
 [![Modules](https://img.shields.io/badge/modules-ESM%20%7C%20CJS-green)](#requirements)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-f87171?logo=kofi&logoColor=white)](https://ko-fi.com/daiyam)
@@ -144,7 +144,7 @@ function err<E>(error: E): Failure<E>;
 
 To minimize allocations when returning the same `Success` shape, you can reuse the exported frozen helpers:
 
-| Constant       | Wrapped value   | Type                 | Typical usage                                          |
+| Constant       | Wrapped Value   | Type                 | Typical Usage                                          |
 | -------------- | --------------- | -------------------- | ------------------------------------------------------ |
 | `OK`           | `ok()`          | `Success<void>`      | Generic void success (e.g., cleanup, notifications)    |
 | `OK_NULL`      | `ok(null)`      | `Success<null>`      | APIs that explicitly signal "nothing" with `null`      |
@@ -260,7 +260,7 @@ Module Entry Points
 
 Choose the entry point that matches your environment and naming preferences:
 
-| Import path           | Description                 | `xtry` name                     | `xdefer` name                         | Extra alias                     |
+| Import Path           | Description                 | `xtry` Name                     | `xdefer` Name                         | Extra Alias                     |
 | --------------------- | --------------------------- | ------------------------------- | ------------------------------------- | ------------------------------- |
 | `@zokugun/xtry`       | Both sync, async and hybrid | `xtry`, `xtryAsync`, `xtrySync` | `xdefer`, `xdeferAsync`, `xdeferSync` | `yres`, `yresAsync`, `yresSync` |
 | `@zokugun/xtry/async` | Async-only                  | `xtryAsync` as `xtry`           | `xdeferAsync` as `xdefer`             | `yresAsync` as `yres`           |

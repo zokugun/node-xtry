@@ -102,33 +102,29 @@ type WrapSyncOverload<Fn extends AnySyncFunction, Err extends Error> = Fn extend
 
 
 export function xtryifyAsync<Err extends Error, Fn extends AnyAsyncFunction = any>(fn: AsyncFunction<Fn>): PreserveAsyncOverloads<Fn, Err> {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion, func-names
+	// eslint-disable-next-line func-names
 	return async function(...args: Parameters<Fn>): AsyncFunctionResult<Fn, Err> {
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return xtryAsync(async () => fn(...args)) as AsyncFunctionResult<Fn, Err>;
 	} as PreserveAsyncOverloads<Fn, Err>;
 }
 
 export function xtryifyAsyncIterable<Err extends Error, Fn extends AsyncIterableFunction = any>(fn: Fn): PreserveAsyncIterableOverloads<Fn, Err> {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion, func-names
+	// eslint-disable-next-line func-names
 	return function(...args: Parameters<Fn>): AsyncIteratableFunctionResult<Fn, Err> {
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return xtryAsyncIterable(fn(...args)) as AsyncIteratableFunctionResult<Fn, Err>;
 	} as PreserveAsyncIterableOverloads<Fn, Err>;
 }
 
 export function xtryifySync<Err extends Error, Fn extends AnySyncFunction = any>(fn: SyncFunction<Fn>): PreserveSyncOverloads<Fn, Err> {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion, func-names
+	// eslint-disable-next-line func-names
 	return function(...args: Parameters<Fn>): SyncFunctionResult<Fn, Err> {
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return xtrySync(() => fn(...args)) as SyncFunctionResult<Fn, Err>;
 	} as PreserveSyncOverloads<Fn, Err>;
 }
 
 export function xtryifySyncIterable<Err extends Error, Fn extends SyncIterableFunction = any>(fn: Fn): PreserveSyncIterableOverloads<Fn, Err> {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion, func-names
+	// eslint-disable-next-line func-names
 	return function(...args: Parameters<Fn>): SyncIteratableFunctionResult<Fn, Err> {
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return xtrySyncIterable(fn(...args)) as SyncIteratableFunctionResult<Fn, Err>;
 	} as PreserveSyncIterableOverloads<Fn, Err>;
 }

@@ -32,7 +32,7 @@ export function ok<T>(value?: T): Success<T> {
 	return {
 		error: undefined,
 		fails: false,
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 		value: value as T,
 	};
 }

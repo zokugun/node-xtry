@@ -21,11 +21,10 @@ export function xtry<T, E = unknown>(func: AsyncIterableCallback<T> | Callback<T
 	try {
 		const value = typeof func === 'function' ? func() : func;
 
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 		if(isPromiseLike(value as MaybePromise<T>)) {
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			return Promise.resolve(value as MaybePromise<T>).then(
-				// eslint-disable-next-line ts/no-unsafe-return, ts/no-unsafe-type-assertion, ts/no-explicit-any
+				// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any
 				(value: T): VoidableResult<T, E> => ok(value) as any,
 				// eslint-disable-next-line ts/use-unknown-in-catch-callback-variable
 				(error) => handleError<T, E>(handler, error),
@@ -40,7 +39,7 @@ export function xtry<T, E = unknown>(func: AsyncIterableCallback<T> | Callback<T
 			return xtrySyncIterable(value, handler);
 		}
 
-		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any, ts/no-unsafe-type-assertion
+		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any
 		return ok(value) as any;
 	}
 	catch(error) {
@@ -52,7 +51,7 @@ export async function xtryAsync<T, E = unknown>(func: PromiseCallback<T>, handle
 	try {
 		const value = await (func instanceof Promise || isAsyncIterable<T>(func) ? func : Promise.resolve().then(func));
 
-		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any, ts/no-unsafe-type-assertion
+		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any
 		return ok(value) as any;
 	}
 	catch(error) {
@@ -96,7 +95,7 @@ export function xtryAsyncIterable<T, E = unknown>(iterable: (() => MaybePromise<
 				return;
 			}
 
-			// eslint-disable-next-line ts/no-unsafe-type-assertion, ts/no-explicit-any
+			// eslint-disable-next-line ts/no-explicit-any
 			yield ok(step.value) as any;
 		}
 	}
@@ -108,7 +107,7 @@ export function xtrySync<T, E = unknown>(func: NonPromiseCallback<T>, handler?: 
 	try {
 		const value = func();
 
-		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any, ts/no-unsafe-type-assertion
+		// eslint-disable-next-line ts/no-unsafe-return, ts/no-explicit-any
 		return ok(value) as any;
 	}
 	catch(error) {
@@ -150,7 +149,7 @@ export function xtrySyncIterable<T, E = unknown>(iterable: (() => Iterable<T>) |
 				return;
 			}
 
-			// eslint-disable-next-line ts/no-explicit-any, ts/no-unsafe-type-assertion
+			// eslint-disable-next-line ts/no-explicit-any
 			yield ok(step.value) as any;
 		}
 	}
@@ -163,11 +162,10 @@ function handleError<T, E>(handler: ErrorHandler<E> | undefined, error: unknown)
 		const newError = handler(error);
 
 		if(newError !== undefined) {
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			return err(newError) as VoidableResult<T, E>;
 		}
 	}
 
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 	return err(error) as VoidableResult<T, E>;
 } // }}}
