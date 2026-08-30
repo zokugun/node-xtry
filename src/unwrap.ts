@@ -23,9 +23,12 @@ export function match<T, E, R>(result: LimitedResult<T, E>, handlers: { failure:
 	}
 }
 
-export function unwrap<T, E>(result: LimitedResult<T, E>): T {
+export function unwrap<T, E>(result: LimitedResult<T, E>, transform?: (error: E) => Error): T {
 	if(result.fails) {
-		if(result.error instanceof Error) {
+		if(transform) {
+			throw transform(result.error);
+		}
+		else if(result.error instanceof Error) {
 			throw result.error;
 		}
 		else {
