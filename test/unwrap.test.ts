@@ -1,7 +1,45 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 
-import { err, ok } from '../src/result.js';
+import { err, ok, type Result } from '../src/result.js';
 import { map, match, unwrap, unwrapOr } from '../src/unwrap.js';
+
+function test(): { error: number; fails: true; value: undefined } | { error: undefined; fails: false; value: string } {
+	return ok('value');
+}
+
+describe('preserves helper types', () => {
+	it('with unexpanded Result', () => {
+		const result = ok('value') as unknown as Result<string, number>;
+		const mapped = map(result, (value) => value.length);
+		const matched = match(result, {
+			failure: (error) => error.toString(),
+			success: (value) => value.length.toString(),
+		});
+		const unwrapped = unwrap(test());
+		const unwrappedOr = unwrapOr(result, (() => 0)());
+
+		expectTypeOf(mapped).toEqualTypeOf<Result<number, number>>();
+		expectTypeOf(matched).toEqualTypeOf<string>();
+		expectTypeOf(unwrapped).toEqualTypeOf<string>();
+		expectTypeOf(unwrappedOr).toEqualTypeOf<number | string>();
+	});
+
+	it('with expanded Result', () => {
+		const result = test();
+		const mapped = map(result, (value) => value.length);
+		const matched = match(result, {
+			failure: (error) => error.toString(),
+			success: (value) => value.length.toString(),
+		});
+		const unwrapped = unwrap(test());
+		const unwrappedOr = unwrapOr(result, (() => 0)());
+
+		expectTypeOf(mapped).toEqualTypeOf<Result<number, number>>();
+		expectTypeOf(matched).toEqualTypeOf<string>();
+		expectTypeOf(unwrapped).toEqualTypeOf<string>();
+		expectTypeOf(unwrappedOr).toEqualTypeOf<number | string>();
+	});
+});
 
 describe('map', () => {
 	it('transforms successful results', () => {

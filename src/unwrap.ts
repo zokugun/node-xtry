@@ -3,16 +3,18 @@ import type { Result } from './result.js';
 import { ok } from './result.js';
 import { stringifyError } from './stringify-error.js';
 
-export function map<T, E, U>(result: Result<T, E>, transform: (value: T) => U): Result<U, E> {
+type LimitedResult<T, E> = { error: E; fails: true } | { fails: false; value: T };
+
+export function map<T, E, U>(result: LimitedResult<T, E>, transform: (value: T) => U): Result<U, E> {
 	if(result.fails) {
-		return result;
+		return result as Result<U, E>;
 	}
 	else {
 		return ok(transform(result.value));
 	}
 }
 
-export function match<T, E, R>(result: Result<T, E>, handlers: { failure: (error: E) => R; success: (value: T) => R }): R {
+export function match<T, E, R>(result: LimitedResult<T, E>, handlers: { failure: (error: E) => R; success: (value: T) => R }): R {
 	if(result.fails) {
 		return handlers.failure(result.error);
 	}
@@ -21,7 +23,7 @@ export function match<T, E, R>(result: Result<T, E>, handlers: { failure: (error
 	}
 }
 
-export function unwrap<T, E>(result: Result<T, E>): T {
+export function unwrap<T, E>(result: LimitedResult<T, E>): T {
 	if(result.fails) {
 		if(result.error instanceof Error) {
 			throw result.error;
@@ -34,7 +36,7 @@ export function unwrap<T, E>(result: Result<T, E>): T {
 	return result.value;
 }
 
-export function unwrapOr<T, E, F>(result: Result<T, E>,	fallback: F): F | T {
+export function unwrapOr<T, E, F>(result: LimitedResult<T, E>,	fallback: F): F | T {
 	if(result.fails) {
 		return fallback;
 	}
