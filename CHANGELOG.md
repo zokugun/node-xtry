@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.12.1 | 2026-08-30
+- add error transformer in `unwrap` function
+- remove `undefined` from possible `Result` value in unwrap functions
+
 ## v0.12.0 | 2026-08-29
 - add unwrap helpers
 - add helpers types for partial result
