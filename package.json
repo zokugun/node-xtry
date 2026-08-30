@@ -111,7 +111,7 @@
 		"@zokugun/eslint-config-test": "0.2.0",
 		"@zokugun/eslint-config-ts": "0.3.2",
 		"@zokugun/fs-extra-plus": "0.6.1",
-		"@zokugun/tsc-leda": "0.8.3",
+		"@zokugun/tsc-leda": "0.9.0",
 		"eslint": "10.8.1",
 		"fixpack": "4.0.0",
 		"fs-extra": "11.3.5",
